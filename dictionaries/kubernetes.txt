@@ -19,8 +19,8 @@ clusterissuers
 # External Secrets Operator
 clustersecretstores
 externalsecrets
-secretstores
 sealedsecrets
+secretstores
 
 # ArgoCD / Flux CRDs
 appprojects
@@ -29,17 +29,19 @@ helmreleases
 kustomizations
 
 # Cluster API (CAPI)
+clusterapi
 kubeadmcontrolplanes
 machinedeployments
 nullprovider
 
 # Velero
 backupstoragelocations
-scheduledbackup
-resourceset
 prebackup
+resourceset
+scheduledbackup
 
 # CLI tools
+clusterctl
 crictl
 etcdctl
 kubeconfigs

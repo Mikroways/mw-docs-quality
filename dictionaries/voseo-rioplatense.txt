@@ -13,11 +13,16 @@ corré
 creá
 ejecutá
 eliminá
+eliminalos
 generá
 indicá
 ingresá
 instalá
+levantá
 mirá
+preguntás
+preferilo
+probá
 proporcioná
 recordá
 reemplazá
@@ -25,7 +30,16 @@ respondé
 verificá
 
 # Presente indicativo vos
+encontrás
 necesitás
+perdés
 podés
+querés
 sabés
 tenés
+
+# Participios regionales
+descripta
+descripto
+descriptas
+descriptos

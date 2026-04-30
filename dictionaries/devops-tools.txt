@@ -16,11 +16,11 @@ envsubst
 fontawesome
 frontmatter
 gitops
-hardcodear
 helmfiles
 hocuspocus
 letsencrypt
 mkdocs
+nindent
 pyproject
 rollouts
 techdocs
@@ -62,4 +62,25 @@ pseudofilesystems
 restoreuser
 
 # Productos y plataformas
+awscli
+myapp
 veeam
+webservers
+
+# Seguridad y autenticación
+authy
+authorizedkeysfile
+backdoors
+forti
+totp
+yubi
+
+# SSH y acceso remoto
+sshuttle
+
+# Fail2ban
+bantime
+unbanip
+
+# Teleport
+tbot

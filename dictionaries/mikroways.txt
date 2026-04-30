@@ -1,9 +1,8 @@
-# Voseo rioplatense
-# Formas verbales del español rioplatense (Argentina, Uruguay) ausentes en es-ar.
-# Separadas para poder deshabilitar en proyectos de documentación formal.
-# caseSensitive: false → una sola forma (con tilde, minúscula) cubre todas las capitalizaciones.
+# Mikroways — términos propios, clientes y marcas
+# caseSensitive: false → una sola forma por término es suficiente.
 
-# Imperativo vos — instrucciones técnicas
+# Herramientas y marcas
 Mikroways
-Redmine
 Moodle
+Redmine
+Vaultwarden
