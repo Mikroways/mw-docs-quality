@@ -1,0 +1,13 @@
+{
+  "name": "@mikroways/cspell-config",
+  "version": "1.0.0",
+  "description": "Diccionarios y configuración base de cSpell para proyectos Mikroways",
+  "private": true,
+  "devDependencies": {
+    "@cspell/dict-es-es": "*",
+    "dictionary-es-ar": "*"
+  },
+  "dependencies": {
+    "cspell": "^10.0.0"
+  }
+}

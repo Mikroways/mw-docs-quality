@@ -1,0 +1,34 @@
+{
+  "version": "0.2",
+  "language": "es,en",
+  "dictionaryDefinitions": [
+    {
+      "name": "es-es",
+      "path": "../node_modules/@cspell/dict-es-es/Spanish.trie.gz"
+    },
+    {
+      "name": "es-ar",
+      "path": "../node_modules/dictionary-es-ar/index.dic"
+    }
+  ],
+  "dictionaries": [
+    "es-es",
+    "es-ar",
+    "aws",
+    "k8s",
+    "bash",
+    "docker",
+    "softwareTerms",
+    "software-tools",
+    "cpp"
+  ],
+  "ignorePaths": [
+    ".venv/**",
+    ".agents/**",
+    "node_modules/**",
+    "site/**",
+    "docs/todo-list.md",
+    "uv.lock",
+    "package-lock.json"
+  ]
+}

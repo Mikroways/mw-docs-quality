@@ -1,0 +1,65 @@
+# DevOps / infraestructura — herramientas, productos y términos de plataforma
+# caseSensitive: false → una sola forma por herramienta es suficiente.
+#
+# Palabras YA cubiertas por dicts estándar (no duplicar aquí):
+#   software-tools: argocd
+#   companies: gitlab
+#   docker: healthcheck
+#   softwareTerms: vmdk
+#   en_us: argo, cassandra, claude
+#   coding-compound-terms: textfile
+#   cpp: oneshot, mountpoint, quiescing
+# Para usarlas, habilitar esos dicts en el proyecto (ver .cspell.json).
+
+# CI/CD y GitOps
+envsubst
+fontawesome
+frontmatter
+gitops
+hardcodear
+helmfiles
+hocuspocus
+letsencrypt
+mkdocs
+pyproject
+rollouts
+techdocs
+
+# Monitoreo y observabilidad
+filebeat
+inotify
+journalctl
+promtail
+pushgateway
+
+# Virtualización e hipervisores
+devtmpfs
+hipervisor
+hipervisores
+qcow
+sesparse
+tmpfs
+
+# Object storage y filesystem
+garagehq
+lmdb
+objectstore
+seaweedfs
+startswith
+
+# Sistemas operativos / shell
+auxf
+tlnp
+ulnp
+xvdf
+zstd
+
+# Credenciales y configuración
+backupuser
+direnv
+envrc
+pseudofilesystems
+restoreuser
+
+# Productos y plataformas
+veeam

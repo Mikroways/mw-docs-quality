@@ -1,0 +1,9 @@
+# Voseo rioplatense
+# Formas verbales del español rioplatense (Argentina, Uruguay) ausentes en es-ar.
+# Separadas para poder deshabilitar en proyectos de documentación formal.
+# caseSensitive: false → una sola forma (con tilde, minúscula) cubre todas las capitalizaciones.
+
+# Imperativo vos — instrucciones técnicas
+Mikroways
+Redmine
+Moodle

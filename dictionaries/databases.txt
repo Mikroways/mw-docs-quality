@@ -1,0 +1,45 @@
+# Bases de datos — herramientas, comandos, variables de entorno y conceptos
+# caseSensitive: false → una sola forma por término es suficiente.
+#
+# Palabras YA cubiertas por dicts estándar (no duplicar aquí):
+#   cpp: dbname
+#   companies: percona
+# Para usarlas, habilitar esos dicts en el proyecto (ver .cspell.json).
+
+# PostgreSQL
+basebackup
+dbfilename
+dbpassword
+dbuser
+dopenproject
+dpostgres
+pdbadm
+pgdata
+pgdump
+pgpassword
+pgzip
+pitr
+upostgres
+uroot
+
+# MySQL / MariaDB
+appendfilename
+appendonly
+binlogs
+mydumper
+myloader
+mysqldump
+xtrabackup
+
+# MongoDB
+mongodump
+
+# Operadores y herramientas adicionales
+pgbackrest
+pgbouncer
+patroni
+
+# Conceptos
+dedup
+deduplica
+deduplicar

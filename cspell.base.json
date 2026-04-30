@@ -1,0 +1,80 @@
+{
+  "version": "0.2",
+  "dictionaryDefinitions": [
+    {
+      "name": "es-es",
+      "path": "./node_modules/@cspell/dict-es-es/Spanish.trie.gz"
+    },
+    {
+      "name": "es-ar",
+      "path": "./node_modules/dictionary-es-ar/index.dic"
+    },
+    {
+      "name": "mw-mikroways",
+      "path": "./dictionaries/mikroways.txt",
+      "description": "Vocabulario propio de Mikroways"
+    },
+    {
+      "name": "mw-español-tech",
+      "path": "./dictionaries/español-tech.txt",
+      "description": "Vocabulario español técnico latinoamericano: sustantivos, adjetivos, spanglish"
+    },
+    {
+      "name": "mw-voseo",
+      "path": "./dictionaries/voseo-rioplatense.txt",
+      "description": "Formas verbales del voseo rioplatense (Argentina, Uruguay)"
+    },
+    {
+      "name": "mw-kubernetes",
+      "path": "./dictionaries/kubernetes.txt",
+      "description": "Recursos, CRDs y herramientas del ecosistema Kubernetes"
+    },
+    {
+      "name": "mw-devops-tools",
+      "path": "./dictionaries/devops-tools.txt",
+      "description": "Herramientas y conceptos del ecosistema DevOps/SRE"
+    },
+    {
+      "name": "mw-databases",
+      "path": "./dictionaries/databases.txt",
+      "description": "Herramientas, comandos y variables de bases de datos"
+    }
+  ],
+  "dictionaries": [
+    "es-es",
+    "es-ar",
+    "mw-mikroways",
+    "mw-español-tech",
+    "mw-voseo",
+    "mw-kubernetes",
+    "mw-devops-tools",
+    "mw-databases",
+    "aws",
+    "k8s",
+    "bash",
+    "docker",
+    "softwareTerms",
+    "software-tools",
+    "cpp"
+  ],
+  "languageSettings": [
+    {
+      "languageId": "*",
+      "locale": "es,es_ES,es_AR",
+      "dictionaries": [
+        "mw-español-tech",
+        "mw-voseo"
+      ],
+      "caseSensitive": false
+    }
+  ],
+  "ignoreRegExpList": [
+    "https?://[^\\s)\\]]+",
+    "\\[[^\\]]*\\]\\([^)]*\\)",
+    "`[^`\\n]+`",
+    "[a-zA-ZÀ-ÿ0-9]+-[a-zA-ZÀ-ÿ0-9][a-zA-ZÀ-ÿ0-9.-]*",
+    "[a-zA-Z0-9]+_[a-zA-Z0-9_]+",
+    "[a-zA-Z0-9_.-]+/[a-zA-Z0-9_./-]+",
+    "[a-zA-Z0-9_-]+\\.[a-zA-Z0-9]+"
+  ]
+}

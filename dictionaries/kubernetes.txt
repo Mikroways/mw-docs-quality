@@ -1,0 +1,51 @@
+# Kubernetes — recursos, CRDs y herramientas del ecosistema
+# caseSensitive: false → una sola forma por término es suficiente.
+
+# Recursos nativos
+accessmode
+persistentvolumes
+pvcs
+storageclasses
+
+# Volume Snapshots (API group: snapshot.storage.k8s.io)
+volumesnapshot
+volumesnapshotclasses
+volumesnapshots
+
+# Cert-manager
+certificaterequests
+clusterissuers
+
+# External Secrets Operator
+clustersecretstores
+externalsecrets
+secretstores
+sealedsecrets
+
+# ArgoCD / Flux CRDs
+appprojects
+gitrepositories
+helmreleases
+kustomizations
+
+# Cluster API (CAPI)
+kubeadmcontrolplanes
+machinedeployments
+nullprovider
+
+# Velero
+backupstoragelocations
+scheduledbackup
+resourceset
+prebackup
+
+# CLI tools
+crictl
+etcdctl
+kubeconfigs
+
+# Distribuciones y sabores
+cloudnative
+cloudnativepg
+cnpg
+doks
