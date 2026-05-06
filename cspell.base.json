@@ -3,11 +3,11 @@
   "dictionaryDefinitions": [
     {
       "name": "es-es",
-      "path": "./node_modules/@cspell/dict-es-es/Spanish.trie.gz"
+      "path": "../../@cspell/dict-es-es/Spanish.trie.gz"
     },
     {
       "name": "es-ar",
-      "path": "./node_modules/dictionary-es-ar/index.dic"
+      "path": "../../dictionary-es-ar/index.dic"
     },
     {
       "name": "mw-mikroways",
