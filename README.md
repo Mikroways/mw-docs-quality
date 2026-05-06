@@ -6,27 +6,51 @@ diccionarios estándar de cSpell.
 
 ## Uso en un proyecto
 
-En el `.cspell.json` del proyecto, importar este archivo:
+Agregar al `package.json` del proyecto:
 
-```jsonc
+```json
+{
+  "private": true,
+  "devDependencies": {
+    "@mikroways/cspell-config": "*",
+    "markdownlint-cli2": "^0.21.0"
+  }
+}
+```
+
+Agregar `.npmrc` para que npm resuelva el scope `@mikroways` desde GitLab:
+
+```
+@mikroways:registry=https://gitlab.com/api/v4/packages/npm/
+```
+
+Instalar:
+
+```bash
+npm install
+```
+
+Luego, en el `.cspell.json` del proyecto:
+
+```json
 {
   "version": "0.2",
-  // Desarrollo local (ruta relativa al repo):
-  "import": ["../../cspell-config/cspell.base.json"],
-  // Producción (una vez publicado en GitLab):
-  // "import": ["https://gitlab.com/mikroways/cspell-config/-/raw/main/cspell.base.json"],
+  "import": ["./node_modules/@mikroways/cspell-config/cspell.base.json"],
   "language": "es,en",
-  "ignorePaths": [".venv/**", "node_modules/**", "site/**", "uv.lock"],
+  "ignorePaths": [".venv/**", "node_modules/**", "site/**", "uv.lock", "package-lock.json"],
   "words": []
 }
 ```
+
+No agregar `dictionaryDefinitions`, `dictionaries` ni `ignoreRegExpList` propios:
+vienen todos del `cspell.base.json` importado.
 
 El import activa automáticamente:
 
 * `es-es` y `es-ar` — español peninsular y rioplatense
 * `aws`, `k8s`, `bash`, `docker`, `softwareTerms`, `software-tools`, `cpp` —
   vocabulario técnico estándar
-* Los cinco diccionarios custom de Mikroways (ver abajo)
+* Los diccionarios custom de Mikroways (ver abajo)
 
 ## Diccionarios
 
@@ -37,6 +61,7 @@ El import activa automáticamente:
 | `dictionaries/kubernetes.txt` | `mw-kubernetes` | CRDs, recursos K8s nativos, CLI tools del ecosistema |
 | `dictionaries/devops-tools.txt` | `mw-devops-tools` | Herramientas DevOps/SRE, infra, monitoreo, shell |
 | `dictionaries/databases.txt` | `mw-databases` | Herramientas, comandos y variables de bases de datos |
+| `dictionaries/mikroways.txt` | `mw-mikroways` | Términos y nombres propios exclusivos de Mikroways |
 
 Cada archivo tiene un comentario al inicio con las palabras que ya están
 cubiertas por dicts estándar y no deben duplicarse.
@@ -87,11 +112,53 @@ cd cspell-test
 La columna `F` muestra `*` si la palabra fue encontrada en ese diccionario.
 Los dicts con `*` al final del nombre están activos en la config de prueba.
 
-## Instalación
+## Publicar una nueva versión
+
+La publicación es automática vía CI al crear un tag `v*`. Pasos:
+
+1. Actualizar `version` en `package.json`
+2. Commitear y crear el tag:
+
+```bash
+git add package.json dictionaries/
+git commit -m "feat(dicts): <descripción>"
+git tag v<version>
+git push origin main --tags
+```
+
+El pipeline de GitLab detecta el tag y ejecuta `npm publish` al registro de GitLab.
+
+## Desarrollo local
 
 ```bash
 npm install
 ```
 
-Instala `cspell` y los diccionarios de español (`@cspell/dict-es-es`, `dictionary-es-ar`)
-en el `node_modules` local, que es el que usa `cspell.base.json` para resolver sus paths.
+Instala `cspell` y los diccionarios de español en `node_modules`, que es lo que usa
+`cspell.base.json` para resolver sus paths relativos.
+
+## Skill de Claude Code
+
+Este repo incluye el skill `mw-lint-config` para Claude Code, que automatiza la
+auditoría y configuración de cSpell y markdownlint en repositorios de Mikroways.
+
+### Instalación del skill
+
+```bash
+git clone git@gitlab.com:mikroways/tools/mw-cspell-config.git
+ln -s "$(pwd)/mw-cspell-config/skills/mw-lint-config" ~/.claude/skills/mw-lint-config
+```
+
+### Uso
+
+Desde cualquier repositorio de documentación, invocar el skill en Claude Code:
+
+```
+/mw-lint-config
+```
+
+El skill detecta el estado actual de cSpell y markdownlint, reporta inconsistencias
+con el estándar de Mikroways y puede aplicar correcciones si se lo pedís.
+
+Para mantener el skill actualizado, hacer `git pull` en el repo clonado — el symlink
+apunta siempre a la versión más reciente.
