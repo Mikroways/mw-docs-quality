@@ -75,10 +75,16 @@ authy
 authorizedkeysfile
 backdoors
 forti
+multifactor
 totp
 yubi
 
 # SSH y acceso remoto
+anyconnect
+findtime
+identityfile
+lineinfile
+publickey
 sshuttle
 
 # Fail2ban
@@ -87,6 +93,7 @@ unbanip
 
 # Contenedores
 tini
+venv
 
 # Teleport
 tbot
