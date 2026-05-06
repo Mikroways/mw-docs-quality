@@ -30,6 +30,13 @@ Instalar:
 npm install
 ```
 
+Para actualizar a la versión más reciente (si `node_modules/` ya existe, `npm install` no
+actualiza automáticamente porque cualquier versión satisface `"*"`):
+
+```bash
+npm install @mikroways/cspell-config@latest
+```
+
 Luego, en el `.cspell.json` del proyecto:
 
 ```json

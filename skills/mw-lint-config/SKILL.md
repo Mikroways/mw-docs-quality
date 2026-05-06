@@ -277,13 +277,21 @@ Si no existe:
 Las deps de diccionarios (`@cspell/dict-es-es`, `dictionary-es-ar`) son transitivas del
 paquete `@mikroways/cspell-config` — no agregarlas directamente.
 
-El `"*"` asegura que siempre se instale la versión latest. No commitear `package-lock.json`.
+El `"*"` asegura que se instale la versión latest en una instalación desde cero. No commitear
+`package-lock.json`.
 
 ### 4.3 Instalar dependencias
 
 ```bash
 npm install
 ```
+
+> **Atención**: si `node_modules/` ya existe con cualquier versión de `@mikroways/cspell-config`,
+> `npm install` no actualizará el paquete (cualquier versión satisface `"*"`). Para forzar la
+> actualización usar:
+> ```bash
+> npm install @mikroways/cspell-config@latest
+> ```
 
 ### 4.4 Aplicar .markdownlint.json estándar para MkDocs Material
 
@@ -380,7 +388,9 @@ validate-spelling:
 
 **Notas de CI**:
 - Cache keyed on `package.json` (no `package-lock.json`) porque no se commitea el lockfile.
-  `npm install` con `"*"` siempre resuelve la versión latest en cache fría.
+  `npm install` con `"*"` resuelve la versión latest solo en instalación desde cero (sin
+  `node_modules/`). En desarrollo local, usar `npm install @mikroways/cspell-config@latest`
+  para forzar actualización si ya existe una versión instalada.
 - Se usa `npm install`, no `npm ci` — `npm ci` exige `package-lock.json` presente.
 - `validate-lint` y `validate-spelling` usan `allow_failure: true` mientras se corrigen
   errores existentes. Quitar el flag cuando el repo tenga 0 errores.
