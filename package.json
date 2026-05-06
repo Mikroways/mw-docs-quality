@@ -1,16 +1,14 @@
 {
   "name": "@mikroways/cspell-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Diccionarios y configuración base de cSpell para proyectos Mikroways",
   "private": false,
   "publishConfig": {
     "@mikroways:registry": "https://gitlab.com/api/v4/projects/81783404/packages/npm/"
   },
-  "devDependencies": {
-    "@cspell/dict-es-es": "*",
-    "dictionary-es-ar": "*"
-  },
   "dependencies": {
-    "cspell": "^10.0.0"
+    "@cspell/dict-es-es": "*",
+    "cspell": "^10.0.0",
+    "dictionary-es-ar": "*"
   }
 }

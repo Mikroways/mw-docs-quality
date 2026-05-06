@@ -29,6 +29,7 @@ binlogs
 mydumper
 myloader
 mysqldump
+xtra
 xtrabackup
 
 # MongoDB

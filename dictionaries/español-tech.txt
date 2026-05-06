@@ -5,6 +5,7 @@
 
 # Sustantivos y adjetivos técnicos
 altísima
+anonimizados
 biométrica
 biométricas
 biométrico
@@ -22,6 +23,7 @@ automatizables
 autosincronice
 bloqueante
 bloqueantes
+cachés
 bootstrapea
 centralizarlos
 configurarlo
@@ -29,6 +31,7 @@ consolidarlos
 correctitud
 declarativamente
 declaratividad
+definirla
 deduplicación
 desactualizadas
 desactualizados
@@ -44,6 +47,7 @@ eliminable
 entregable
 entregables
 escaneable
+estáticamente
 efimeralidad
 exfiltrar
 geolocalización
@@ -62,12 +66,14 @@ interoperar
 listarlos
 mikroways
 milisegundos
+multilínea
 monitorea
 monitoreado
 monitoreados
 nativamente
 observabilidad
 orquestador
+parametrizables
 penalizarnos
 previsualizar
 provisionadas
@@ -76,6 +82,9 @@ provisionamiento
 reconecta
 reconectar
 reconectarse
+reconfigurar
+reconfigurarse
+reconfiguración
 recuperabilidad
 regenerable
 regenerables
@@ -120,6 +129,11 @@ commitearlos
 commitearse
 containerización
 containerizar
+containerizable
+containerizada
+containerizado
+containerizados
+containerizadas
 customizados
 decomisiona
 decomisionar
@@ -132,6 +146,9 @@ enrutaste
 hardea
 hardear
 hardcodeado
+hardcodeada
+hardcodeados
+hardcodeadas
 hardcodear
 linkea
 linkean
@@ -165,6 +182,11 @@ recifrándolas
 recifrándolos
 recifrar
 renderizan
+renderizar
+renderizado
+renderizados
+renderizada
+renderizadas
 renderizaremos
 setea
 seteada
@@ -179,7 +201,18 @@ setearlas
 setearlo
 setearlos
 setearse
+parsean
+parsear
+parseado
+parseada
+parseados
+parseadas
 tagear
+testear
+testeado
+testeada
+testeados
+testeadas
 trackeada
 trackeado
 trackeadas

@@ -47,7 +47,9 @@ etcdctl
 kubeconfigs
 
 # Distribuciones y sabores
+alertmanager
 cloudnative
+kyverno
 cloudnativepg
 cnpg
 doks

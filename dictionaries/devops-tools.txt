@@ -12,7 +12,9 @@
 # Para usarlas, habilitar esos dicts en el proyecto (ver .cspell.json).
 
 # CI/CD y GitOps
+dockerfiles
 envsubst
+gotemplate
 fontawesome
 frontmatter
 gitops
@@ -63,6 +65,7 @@ restoreuser
 
 # Productos y plataformas
 awscli
+supervisord
 myapp
 veeam
 webservers
@@ -81,6 +84,9 @@ sshuttle
 # Fail2ban
 bantime
 unbanip
+
+# Contenedores
+tini
 
 # Teleport
 tbot
