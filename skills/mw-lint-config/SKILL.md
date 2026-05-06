@@ -93,10 +93,9 @@ Si el paquete no está instalado, ejecutar `npm install` antes de las fases de a
 ### 2.1 Detectar solapamientos entre diccionarios custom
 
 ```bash
-# Reunir todas las palabras de todos los diccionarios custom
-DICT_DIR="<ruta-a-cspell-config>/dictionaries"
-cat "$DICT_DIR"/*.txt | grep -v "^#" | grep -v "^$" | sort > /tmp/all_custom.txt
-# Detectar duplicados
+CSPELL_REPO=$(find ~ -maxdepth 5 -name "cspell.base.json" -path "*/mw-cspell-config/*" 2>/dev/null | head -1 | xargs -r dirname)
+DICT_DIR="$CSPELL_REPO/dictionaries"
+# Detectar duplicados entre todos los diccionarios custom
 sort "$DICT_DIR"/*.txt | grep -v "^#" | grep -v "^$" | uniq -d
 ```
 
@@ -172,13 +171,25 @@ Solo si no está en ningún built-in, agregar al archivo `.txt` del repo compart
 
 #### Cómo actualizar los diccionarios
 
-El repo compartido está en `/home/juanpsm/mw/cspell-config` (o clonarlo desde
-`git@gitlab.com:mikroways/tools/mw-cspell-config.git`).
+**Paso 0 — Localizar el repo compartido**
+
+```bash
+CSPELL_REPO=$(find ~ -maxdepth 5 -name "cspell.base.json" -path "*/mw-cspell-config/*" 2>/dev/null | head -1 | xargs -r dirname)
+echo "${CSPELL_REPO:-NO ENCONTRADO}"
+```
+
+Si no está clonado, clonarlo antes de continuar:
+
+```bash
+git clone git@gitlab.com:mikroways/tools/mw-cspell-config.git ~/mw/cspell-config
+cd ~/mw/cspell-config && npm install
+CSPELL_REPO=~/mw/cspell-config
+```
 
 **Paso 1 — Verificar que la palabra no está en dicts built-in**
 
 ```bash
-cd /home/juanpsm/mw/cspell-config/cspell-test
+cd "$CSPELL_REPO/cspell-test"
 ./audit-dict.sh --all <diccionario>.txt   # para auditar un dict completo
 ../node_modules/.bin/cspell trace --no-color <palabra>  # para una palabra puntual
 ```
@@ -210,6 +221,7 @@ La publicación es automática vía CI al crear un tag. Primero bumping de versi
 luego:
 
 ```bash
+cd "$CSPELL_REPO"
 git add dictionaries/<archivo>.txt package.json
 git commit -m "feat(dicts): agregar <descripción>"
 git tag v<nueva-version>
