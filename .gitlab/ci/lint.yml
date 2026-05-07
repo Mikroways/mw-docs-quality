@@ -1,0 +1,48 @@
+# Template reutilizable de jobs de linting (markdownlint + cspell) para
+# proyectos de documentación de Mikroways.
+#
+# Uso desde otro proyecto (en su .gitlab-ci.yml):
+#
+#   include:
+#     - project: 'mikroways/tools/mw-cspell-config'
+#       file: '/.gitlab/ci/lint.yml'
+#       ref: main
+#
+#   stages:
+#     - validate
+#
+# El proyecto consumidor debe tener:
+#   - package.json con devDependencies: @mikroways/cspell-config y markdownlint-cli2
+#   - .npmrc apuntando al GitLab Package Registry de Mikroways
+#   - .markdownlint-cli2.yaml con globs (puede extender la config compartida)
+#   - .cspell.json importando ./node_modules/@mikroways/cspell-config/cspell.base.json
+
+.mw-lint-npm:
+  image: node:22-alpine
+  cache:
+    - key:
+        files:
+          - package.json
+      paths:
+        - node_modules/
+  before_script:
+    - npm install
+
+# Markdownlint usa caché del anchor: markdownlint-cli2 cambia con poca frecuencia.
+validate-lint:
+  extends: .mw-lint-npm
+  stage: validate
+  allow_failure: true
+  script:
+    - npx markdownlint-cli2
+
+# Cspell sin caché y forzando @latest en cada ejecución: garantiza que los
+# diccionarios estén siempre actualizados (el package.json declara "*" como
+# versión, pero npm con caché sirve la versión vieja indefinidamente).
+validate-spelling:
+  image: node:22-alpine
+  stage: validate
+  allow_failure: true
+  script:
+    - npm install --no-save @mikroways/cspell-config@latest
+    - npx cspell "**/*.md"

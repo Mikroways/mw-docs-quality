@@ -76,5 +76,17 @@
     "[a-zA-Z0-9]+_[a-zA-Z0-9_]+",
     "[a-zA-Z0-9_.-]+/[a-zA-Z0-9_./-]+",
     "[a-zA-Z0-9_-]+\\.[a-zA-Z0-9]+"
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    ".venv/**",
+    ".agents/**",
+    ".planning/**",
+    ".claude/**",
+    "site/**",
+    "public/**",
+    "docs/todo-list.md",
+    "package-lock.json",
+    "uv.lock"
   ]
 }

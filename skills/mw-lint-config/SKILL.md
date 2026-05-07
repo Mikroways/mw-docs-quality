@@ -1,6 +1,6 @@
 ---
 name: mw-lint-config
-version: 1.5.0
+version: 1.7.0
 description: |
   Verifica y aplica la configuración estándar de markdownlint y cSpell en un
   repositorio de documentación de Mikroways. Detecta configuraciones faltantes,
@@ -41,10 +41,9 @@ npx cspell "**/*.md" --no-progress 2>/dev/null | grep -c "Unknown word" || echo 
 Leer `.cspell.json`. Verificar:
 
 - [ ] `"import"` es `["./node_modules/@mikroways/cspell-config/cspell.base.json"]`
-- [ ] **No** tiene `dictionaryDefinitions` ni `dictionaries` propios (vienen del base config vía import)
-- [ ] **No** tiene `ignoreRegExpList` propio (viene del base config)
+- [ ] **No** tiene `dictionaryDefinitions`, `dictionaries`, `ignoreRegExpList` ni `ignorePaths` propios — todo viene del base config vía import (desde v1.1.0)
 - [ ] `words` contiene **solo** términos específicos del proyecto (no vocabulario genérico)
-- [ ] `ignorePaths` excluye `.venv/`, `node_modules/`, `site/`, lockfiles
+- [ ] Si tiene `ignorePaths`, son **solo paths específicos del proyecto** (no los universales como `node_modules/**`, `.venv/**`, `.agents/**`, `.planning/**`, `.claude/**`, `site/**`, `public/**`, `docs/todo-list.md`, `package-lock.json`, `uv.lock` — esos vienen de la base)
 
 ```bash
 cat package.json 2>/dev/null | grep -E "cspell-config|markdownlint"
@@ -59,12 +58,18 @@ cat .npmrc 2>/dev/null || echo ".npmrc FALTA"
 ### 1.2 markdownlint
 
 ```bash
-ls .markdownlint.json .markdownlint.yaml .markdownlint.yml .markdownlintrc 2>/dev/null || echo "FALTA"
+ls .markdownlint-cli2.yaml .markdownlint-cli2.yml .markdownlint-cli2.jsonc 2>/dev/null || echo "FALTA"
 # Ejecutar SIN argumentos: pasar "**/*.md" como arg se combina con los globs del
 # .markdownlint-cli2.yaml de forma aditiva, ignorando los excludes y escaneando
 # node_modules. Sin args, usa solo los globs del archivo de config.
 npx markdownlint-cli2 2>/dev/null | tail -3
 ```
+
+Verificar:
+
+- [ ] Existe `.markdownlint-cli2.yaml` con `globs:` y `config: { extends: ... }`
+- [ ] El `extends` apunta a `./node_modules/@mikroways/cspell-config/markdownlint.json`
+- [ ] **No** existe `.markdownlint.json` independiente (las reglas vienen del extends desde v1.1.0)
 
 ### 1.3 Localizar el repo compartido cspell-config
 
@@ -239,20 +244,21 @@ Si no existe o le faltan elementos clave, crear/actualizar con la forma mínima:
   "version": "0.2",
   "import": ["./node_modules/@mikroways/cspell-config/cspell.base.json"],
   "language": "es,en",
-  "ignorePaths": [
-    ".venv/**",
-    ".agents/**",
-    "node_modules/**",
-    "site/**",
-    "uv.lock",
-    "package-lock.json"
-  ],
   "words": []
 }
 ```
 
-`dictionaryDefinitions`, `dictionaries` e `ignoreRegExpList` vienen del `cspell.base.json`
-del paquete compartido — no repetirlos en el proyecto salvo que se quiera sobreescribir algo.
+Desde la versión `1.1.0` del paquete compartido, `cspell.base.json` provee:
+
+- `dictionaryDefinitions` y `dictionaries` (incluyendo es-es, es-ar y los custom de Mikroways)
+- `ignoreRegExpList` (URLs, slugs, código inline, etc.)
+- `ignorePaths` (`node_modules/**`, `.venv/**`, `.agents/**`, `.planning/**`,
+  `.claude/**`, `site/**`, `public/**`, `docs/todo-list.md`, `package-lock.json`,
+  `uv.lock`)
+
+Por eso el `.cspell.json` del proyecto solo necesita `import`, `language` y `words`.
+Si hay paths o términos específicos del proyecto que la base no cubre, agregarlos
+en `ignorePaths` o `words` del proyecto.
 
 ### 4.2.1 Aplicar .npmrc estándar
 
@@ -293,28 +299,37 @@ npm install
 > npm install @mikroways/cspell-config@latest
 > ```
 
-### 4.4 Aplicar .markdownlint.json estándar para MkDocs Material
+### 4.4 Aplicar .markdownlint-cli2.yaml estándar
 
-Si no existe:
+Si existe `.markdownlint.json` independiente, **eliminarlo**: las reglas vienen del
+paquete compartido vía `extends:`.
 
-```json
-{
-  "default": true,
-  "MD013": false,
-  "MD046": { "style": "fenced" },
-  "MD060": false
-}
+Crear/actualizar `.markdownlint-cli2.yaml` con:
+
+```yaml
+globs:
+  - "**/*.md"
+  - "!node_modules/**"
+  - "!.venv/**"
+  - "!.agents/**"
+  - "!.planning/**"
+  - "!docs/todo-list.md"
+config:
+  extends: ./node_modules/@mikroways/cspell-config/markdownlint.json
 ```
 
-**Por qué `"style": "fenced"` y no `false`**: MkDocs Material requiere que el contenido
+Las reglas base (`default: true`, `MD013: false`, `MD046: { style: fenced }`,
+`MD060: false`) vienen del archivo extendido. Para overridear o agregar reglas
+específicas del proyecto, agregarlas bajo `config:` (toman precedencia sobre el
+extends).
+
+**Por qué `MD046: { style: fenced }`**: MkDocs Material requiere que el contenido
 de admonitions (` !!! tip `) y tabs (`=== "..."`) esté indentado 4 espacios. CommonMark
 trata los bloques con 4 espacios de indentación como "indented code blocks", no como
-fenced, aunque tengan backticks. Deshabilitar MD046 globalmente es innecesario — basta
-con fijar `"style": "fenced"` y usar `<!-- markdownlint-disable MD046 -->` /
-`<!-- markdownlint-enable MD046 -->` alrededor de cada admonition o tab que contenga
-código.
+fenced, aunque tengan backticks. Fijar `"style": "fenced"` evita falsos positivos en
+admonitions/tabs.
 
-**Patrón per-bloque** (obligatorio, no deshabilitar globalmente):
+**Patrón per-bloque** (cuando se necesita disable/enable puntual):
 
 ```markdown
 <!-- markdownlint-disable MD046 -->
@@ -327,79 +342,47 @@ código.
 <!-- markdownlint-enable MD046 -->
 ```
 
-Lo mismo para tabs:
-
-```markdown
-<!-- markdownlint-disable MD046 -->
-=== "macOS"
-
-    ```bash
-    brew install sops
-    ```
-
-=== "Linux"
-
-    ```bash
-    apt install sops
-    ```
-<!-- markdownlint-enable MD046 -->
-```
-
-**Limitación del modo "consistent"**: si en un archivo el primer bloque de código está
-dentro de un admonition (y markdownlint lo ve como "indented"), el modo `"consistent"`
-marca todos los bloques fenced posteriores como incorrectos — incluso si se envuelven
-los bloques del admonition con disable/enable. El disable/enable suprime el error del
-bloque envuelto pero NO cambia el estilo esperado establecido por ese primer bloque.
-La solución es usar `"style": "fenced"` en `.markdownlint.json` para que la regla espere
-fenced en todos lados y solo flaggee los admonitions sin disable/enable.
-
 ### 4.5 Agregar jobs de lint al CI/CD (GitLab CI)
 
-Si el repositorio tiene `.gitlab-ci.yml`, agregar el anchor `.npm` y los jobs
-de lint. Primero leer el CI existente para ubicar la posición correcta (después
-del anchor `.uv` si existe, antes de los jobs de validación de docs).
+Desde la versión `1.1.0` del paquete compartido, los jobs `validate-lint` y
+`validate-spelling` se proveen vía template. El `.gitlab-ci.yml` del proyecto
+solo necesita incluirlo:
 
 ```yaml
-.npm:
-  image: node:22-alpine
-  cache:
-    - key:
-        files:
-          - package.json
-      paths:
-        - node_modules/
-  before_script:
-    - npm install
+include:
+  - project: 'mikroways/tools/mw-cspell-config'
+    file: '/.gitlab/ci/lint.yml'
+    ref: main
 
-validate-lint:
-  extends: .npm
-  stage: validate
-  allow_failure: true
-  script:
-    - npx markdownlint-cli2
-
-validate-spelling:
-  extends: .npm
-  stage: validate
-  allow_failure: true
-  script:
-    - npx cspell "**/*.md"
+stages:
+  - validate
 ```
 
+Si el `.gitlab-ci.yml` existente define el anchor `.npm` y los jobs
+`validate-lint` y `validate-spelling` propios, **eliminarlos** y reemplazar
+por el `include:` de arriba. El template provee:
+
+- `.mw-lint-npm`: anchor con caché de `node_modules` keyed on `package.json`
+- `validate-lint`: extiende `.mw-lint-npm` y corre `markdownlint-cli2`
+- `validate-spelling`: corre `npm install --no-save @mikroways/cspell-config@latest`
+  sin caché en cada ejecución, y luego `npx cspell "**/*.md"`
+
+**Por qué `validate-spelling` no usa caché**: el anchor cachea `node_modules/`
+con clave en `package.json`. Como `package.json` declara
+`@mikroways/cspell-config: "*"`, npm interpreta "cualquier versión satisface la
+restricción"; una vez que la caché tiene cualquier versión instalada, `npm
+install` no la actualiza, aunque se publiquen versiones nuevas con palabras
+nuevas. Como los diccionarios cambian seguido, el job se desacopla del anchor
+y fuerza `@latest` en cada ejecución, garantizando los diccionarios al día.
+
 **Notas de CI**:
-- Cache keyed on `package.json` (no `package-lock.json`) porque no se commitea el lockfile.
-  `npm install` con `"*"` resuelve la versión latest solo en instalación desde cero (sin
-  `node_modules/`). En desarrollo local, usar `npm install @mikroways/cspell-config@latest`
-  para forzar actualización si ya existe una versión instalada.
-- Se usa `npm install`, no `npm ci` — `npm ci` exige `package-lock.json` presente.
-- `validate-lint` y `validate-spelling` usan `allow_failure: true` mientras se corrigen
-  errores existentes. Quitar el flag cuando el repo tenga 0 errores.
-- El job de markdownlint corre `npx markdownlint-cli2` **sin argumentos** — importante para
-  que respete los excludes del `.markdownlint-cli2.yaml` (ver Fase 1.2).
-- El `stage: validate` debe existir en `stages:`. Si no existe, agregarlo.
-- El runner necesita acceso al GitLab Package Registry para descargar `@mikroways/cspell-config`.
-  Los runners de GitLab.com tienen acceso por defecto si el paquete es público o el proyecto
-  tiene el token CI configurado.
+- El `stage: validate` debe existir en `stages:` del proyecto. Si no existe, agregarlo.
+- Los jobs del template usan `allow_failure: true` mientras se corrigen errores
+  existentes. Para hacerlos bloqueantes, sobreescribir el job en el CI del
+  proyecto.
+- El runner necesita acceso al GitLab Package Registry de Mikroways para
+  descargar `@mikroways/cspell-config`. También necesita acceso al proyecto
+  `mikroways/tools/mw-cspell-config` para resolver el `include:`.
 
 ---
 

@@ -1,12 +1,22 @@
 # @mikroways/cspell-config
 
-Configuración base de cSpell compartida entre todos los proyectos de Mikroways.
-Incluye diccionarios temáticos con vocabulario que no está cubierto por los
-diccionarios estándar de cSpell.
+Configuración compartida de **cSpell** y **markdownlint** para los proyectos de
+documentación de Mikroways. Provee:
 
-## Uso en un proyecto
+- Diccionarios temáticos con vocabulario que no está cubierto por los
+  diccionarios estándar de cSpell.
+- Configuración base de cSpell (`cspell.base.json`) con `ignorePaths` y
+  `ignoreRegExpList` listos para usar.
+- Configuración base de markdownlint (`markdownlint.json`) extensible vía
+  `extends:`.
+- Template de GitLab CI (`.gitlab/ci/lint.yml`) con los jobs `validate-lint` y
+  `validate-spelling` listos para incluir en cualquier proyecto.
 
-Agregar al `package.json` del proyecto:
+## Setup mínimo en un proyecto consumidor
+
+El proyecto consumidor necesita 4 archivos:
+
+### 1. `package.json`
 
 ```json
 {
@@ -18,46 +28,96 @@ Agregar al `package.json` del proyecto:
 }
 ```
 
-Agregar `.npmrc` para que npm resuelva el scope `@mikroways` desde GitLab:
+### 2. `.npmrc`
+
+Le dice a npm cómo resolver el scope `@mikroways` desde el GitLab Package
+Registry de Mikroways:
 
 ```
 @mikroways:registry=https://gitlab.com/api/v4/packages/npm/
 ```
 
-Instalar:
+### 3. `.cspell.json`
 
-```bash
-npm install
-```
-
-Para actualizar a la versión más reciente (si `node_modules/` ya existe, `npm install` no
-actualiza automáticamente porque cualquier versión satisface `"*"`):
-
-```bash
-npm install @mikroways/cspell-config@latest
-```
-
-Luego, en el `.cspell.json` del proyecto:
+Importa la base + define palabras específicas del proyecto:
 
 ```json
 {
   "version": "0.2",
   "import": ["./node_modules/@mikroways/cspell-config/cspell.base.json"],
   "language": "es,en",
-  "ignorePaths": [".venv/**", "node_modules/**", "site/**", "uv.lock", "package-lock.json"],
   "words": []
 }
 ```
 
-No agregar `dictionaryDefinitions`, `dictionaries` ni `ignoreRegExpList` propios:
-vienen todos del `cspell.base.json` importado.
+`ignorePaths`, `dictionaries`, `dictionaryDefinitions` y `ignoreRegExpList`
+vienen del `cspell.base.json` importado. Solo agregar `ignorePaths` extra si
+el proyecto tiene paths que no están cubiertos por la base (`node_modules/**`,
+`.venv/**`, `.agents/**`, `.planning/**`, `.claude/**`, `site/**`,
+`public/**`, `docs/todo-list.md`, `package-lock.json`, `uv.lock`).
 
-El import activa automáticamente:
+### 4. `.markdownlint-cli2.yaml`
 
-* `es-es` y `es-ar` — español peninsular y rioplatense
-* `aws`, `k8s`, `bash`, `docker`, `softwareTerms`, `software-tools`, `cpp` —
-  vocabulario técnico estándar
-* Los diccionarios custom de Mikroways (ver abajo)
+Define los globs y extiende la config compartida:
+
+```yaml
+globs:
+  - "**/*.md"
+  - "!node_modules/**"
+config:
+  extends: ./node_modules/@mikroways/cspell-config/markdownlint.json
+```
+
+Para sobreescribir alguna regla de la base, agregarla bajo `config:` del lado
+del proyecto (es prioritaria sobre lo extendido).
+
+## Instalación
+
+```bash
+npm install
+```
+
+Para forzar la última versión del paquete (cuando `node_modules/` ya existe,
+`npm install` no actualiza porque cualquier versión satisface `"*"`):
+
+```bash
+npm install @mikroways/cspell-config@latest
+```
+
+## Comandos locales
+
+```bash
+# Markdownlint (formato)
+npx markdownlint-cli2
+
+# Cspell (ortografía) — siempre con la última versión del paquete
+npm install @mikroways/cspell-config@latest && npx cspell "**/*.md"
+```
+
+## GitLab CI
+
+Para agregar los jobs `validate-lint` y `validate-spelling` al pipeline,
+incluir el template compartido:
+
+```yaml
+include:
+  - project: 'mikroways/tools/mw-cspell-config'
+    file: '/.gitlab/ci/lint.yml'
+    ref: main
+
+stages:
+  - validate
+```
+
+El template provee:
+
+- `validate-lint`: corre `markdownlint-cli2` con caché de `node_modules`.
+- `validate-spelling`: instala `@mikroways/cspell-config@latest` sin caché en
+  cada ejecución para garantizar que los diccionarios estén siempre
+  actualizados.
+
+Ambos jobs usan `allow_failure: true` para no bloquear el pipeline durante la
+adopción inicial.
 
 ## Diccionarios
 
@@ -97,7 +157,7 @@ cd cspell-test
 # Un diccionario — solo dicts activos
 ./audit-dict.sh databases.txt
 
-# Un diccionario — todos los dicts, incluidos inactivos (para decidir si 
+# Un diccionario — todos los dicts, incluidos inactivos (para decidir si
 # conviene habilitar alguno)
 ./audit-dict.sh --all databases.txt
 
@@ -169,3 +229,9 @@ con el estándar de Mikroways y puede aplicar correcciones si se lo pedís.
 
 Para mantener el skill actualizado, hacer `git pull` en el repo clonado — el symlink
 apunta siempre a la versión más reciente.
+
+## Recursos externos
+
+- [Documentación de cSpell](https://cspell.org)
+- [Documentación de markdownlint](https://github.com/DavidAnson/markdownlint)
+- [Reglas de markdownlint](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md)
