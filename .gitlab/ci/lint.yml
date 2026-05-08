@@ -27,6 +27,7 @@
         - node_modules/
   before_script:
     - npm install
+    - npm install --no-save @mikroways/cspell-config@latest
 
 # Markdownlint usa caché del anchor: markdownlint-cli2 cambia con poca frecuencia.
 validate-lint:
