@@ -14,10 +14,10 @@
 # CI/CD y GitOps
 dockerfiles
 envsubst
-gotemplate
 fontawesome
 frontmatter
 gitops
+gotemplate
 helmfiles
 hocuspocus
 letsencrypt

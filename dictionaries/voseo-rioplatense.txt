@@ -20,14 +20,15 @@ ingresá
 instalá
 levantá
 mirá
-preguntás
 preferilo
+preguntás
 probá
 proporcioná
 recordá
 reemplazá
 respondé
 verificá
+verificalos
 
 # Presente indicativo vos
 encontrás
@@ -41,6 +42,6 @@ tenés
 
 # Participios regionales
 descripta
-descripto
 descriptas
+descripto
 descriptos
