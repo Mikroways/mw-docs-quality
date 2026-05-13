@@ -55,7 +55,10 @@ validate-skill-version:
           prev_raw=$(git show "${BASE_SHA}:${skill_md}" 2>/dev/null || true)
           prev=$(printf '%s\n' "$prev_raw" | sed -n 's/^version:[[:space:]]*//p' | tr -d '"')
           curr=$(sed -n 's/^version:[[:space:]]*//p' "$skill_md" | tr -d '"')
-          if [ -z "$prev" ]; then
+          if [ -z "$curr" ]; then
+            echo "ERROR: ${skill_md} no declara campo 'version:'"
+            failed=1
+          elif [ -z "$prev" ]; then
             echo "INFO: ${skill_md} es nuevo en este rango (no existía en ${BASE_SHA})"
           elif [ "$prev" = "$curr" ]; then
             echo "ERROR: ${skill_md} fue modificado pero la versión no fue incrementada (sigue en ${curr})"
