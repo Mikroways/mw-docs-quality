@@ -136,6 +136,8 @@ subsección
 subsecciones
 superusuario
 superusuarios
+subproceso
+subprocesos
 telcos
 transicionamos
 transicionar
@@ -276,6 +278,11 @@ setearlo
 setearlos
 setearse
 tagear
+templatizada
+templatizadas
+templatizado
+templatizados
+templatizar
 testeada
 testeadas
 testeado

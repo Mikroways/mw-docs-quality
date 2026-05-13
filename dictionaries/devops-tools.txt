@@ -92,6 +92,12 @@ bantime
 unbanip
 
 # Contenedores
+adduser
+apikey
+CHANGEME
+distroless
+healthchecks
+Sigstore
 tini
 venv
 
