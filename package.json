@@ -1,6 +1,6 @@
 {
   "name": "@mikroways/cspell-config",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Diccionarios y configuración base de cSpell para proyectos Mikroways",
   "private": false,
   "publishConfig": {
