@@ -1,0 +1,125 @@
+# Template reutilizable de jobs de validación de skills para marcos técnicos Mikroways.
+#
+# Uso desde otro proyecto (en su .gitlab-ci.yml):
+#
+#   include:
+#     - project: 'mikroways/tools/mw-docs-quality'
+#       file: '/.gitlab/ci/marco-tecnico.yml'
+#       ref: main
+#
+#   stages:
+#     - validate
+#
+# Prerequisitos:
+#   - Skills en skills/*/SKILL.md con campo version:.
+#   - Marcador <!-- skill-version: <nombre> <version> --> en docs/ por cada skill.
+#   - Archivos bajo skills/*/assets/copy/ sincronizados con su fuente en el repo.
+
+# Criterio 6.3: si se modifican archivos bajo skills/*/, exigir que la
+# versión del SKILL.md correspondiente haya sido incrementada.
+validate-skill-version:
+  stage: validate
+  image: alpine:3.21
+  variables:
+    GIT_DEPTH: 0
+  before_script:
+    - apk add --no-cache git
+  script:
+    - |
+      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+        BASE_SHA="$CI_MERGE_REQUEST_DIFF_BASE_SHA"
+        echo "Pipeline de MR. Base SHA: $BASE_SHA"
+      elif [ "$CI_COMMIT_BEFORE_SHA" = "0000000000000000000000000000000000000000" ]; then
+        echo "Nueva rama sin commit previo, omitiendo verificación de versión"
+        exit 0
+      else
+        BASE_SHA="$CI_COMMIT_BEFORE_SHA"
+        echo "Pipeline de push. Base SHA: $BASE_SHA"
+      fi
+
+      echo "Chequeando skills..."
+      if ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+        echo "BASE_SHA $BASE_SHA no está en el clone local; intentando fetch..."
+        git fetch --depth=50 origin "$BASE_SHA" 2>/dev/null || git fetch --unshallow origin 2>/dev/null || true
+      fi
+      if ! git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+        echo "No se pudo obtener BASE_SHA $BASE_SHA. Omitiendo verificación."
+        exit 0
+      fi
+      failed=0
+      for skill_md in skills/*/SKILL.md; do
+        echo ">>>> Chequeando $skill_md"
+        [ -f "$skill_md" ] || continue
+        skill_dir=$(dirname "$skill_md")
+        if git diff --name-only "$BASE_SHA" "$CI_COMMIT_SHA" -- "${skill_dir}/" | grep -q .; then
+          prev_raw=$(git show "${BASE_SHA}:${skill_md}" 2>/dev/null || true)
+          prev=$(printf '%s\n' "$prev_raw" | sed -n 's/^version:[[:space:]]*//p' | tr -d '"')
+          curr=$(sed -n 's/^version:[[:space:]]*//p' "$skill_md" | tr -d '"')
+          if [ -z "$prev" ]; then
+            echo "INFO: ${skill_md} es nuevo en este rango (no existía en ${BASE_SHA})"
+          elif [ "$prev" = "$curr" ]; then
+            echo "ERROR: ${skill_md} fue modificado pero la versión no fue incrementada (sigue en ${curr})"
+            failed=1
+          else
+            echo "OK: ${skill_md} ${prev} → ${curr}"
+          fi
+        else
+          echo " - El skill $skill_md no fue modificado"
+        fi
+      done
+      exit $failed
+
+# Criterio 6.4: la versión declarada en el marcador de docs/ debe coincidir
+# con la del SKILL.md. Convención: <!-- skill-version: <nombre> <version> -->
+validate-skill-version-docs:
+  stage: validate
+  image: alpine:3.21
+  script:
+    - |
+      failed=0
+      for skill_md in skills/*/SKILL.md; do
+        [ -f "$skill_md" ] || continue
+        skill_name=$(dirname "$skill_md" | sed 's|skills/||')
+        curr=$(sed -n 's/^version:[[:space:]]*//p' "$skill_md" | tr -d '"')
+        if [ -z "$curr" ]; then
+          echo "ERROR: no se encontró version en $skill_md"
+          failed=1
+          continue
+        fi
+        docs_ver=$(grep -rh "skill-version: ${skill_name} " docs/ 2>/dev/null \
+          | grep -o '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*' | head -1 || true)
+        if [ -z "$docs_ver" ]; then
+          echo "ERROR: no se encontró marcador skill-version para '$skill_name' en docs/"
+          failed=1
+        elif [ "$docs_ver" != "$curr" ]; then
+          echo "ERROR: docs/ menciona $docs_ver del skill '$skill_name' pero SKILL.md dice $curr"
+          failed=1
+        else
+          echo "OK: skill '$skill_name' versión $curr coincide en SKILL.md y docs/"
+        fi
+      done
+      exit $failed
+
+# Verifica que los archivos bajo skills/*/assets/copy/ estén sincronizados
+# con su contraparte en el repositorio.
+validate-asset-copies:
+  stage: validate
+  image: alpine:3.21
+  script:
+    - |
+      failed=0
+      for copy_file in $(find skills -path '*/assets/copy/*' -type f 2>/dev/null); do
+        skill_name=$(echo "$copy_file" | sed 's|skills/\([^/]*\)/.*|\1|')
+        source_path=$(echo "$copy_file" | sed "s|skills/${skill_name}/assets/copy/||")
+        if [ ! -f "$source_path" ]; then
+          echo "ERROR: fuente '$source_path' no existe (copiada en $copy_file)"
+          failed=1
+        elif ! diff -q "$source_path" "$copy_file" > /dev/null 2>&1; then
+          echo "ERROR: $copy_file desincronizado respecto a $source_path"
+          echo "       Ejecutar: cp $source_path $copy_file"
+          failed=1
+        else
+          echo "OK: $copy_file sincronizado con $source_path"
+        fi
+      done
+      exit $failed

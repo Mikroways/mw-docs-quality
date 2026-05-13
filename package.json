@@ -1,7 +1,7 @@
 {
-  "name": "@mikroways/cspell-config",
-  "version": "1.1.2",
-  "description": "Diccionarios y configuración base de cSpell para proyectos Mikroways",
+  "name": "@mikroways/docs-quality",
+  "version": "2.0.0",
+  "description": "Herramientas de calidad de documentación para proyectos Mikroways (cSpell, markdownlint, CI templates)",
   "private": false,
   "publishConfig": {
     "@mikroways:registry": "https://gitlab.com/api/v4/projects/81783404/packages/npm/"

@@ -56,6 +56,8 @@ desadjuntar
 descomentar
 desconexión
 desconexiones
+desincronizado
+desincronizados
 desfasaje
 deshabilitación
 desincronicen
