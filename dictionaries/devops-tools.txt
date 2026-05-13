@@ -57,6 +57,8 @@ xvdf
 zstd
 
 # Credenciales y configuración
+appgroup
+appuser
 backupuser
 direnv
 envrc
