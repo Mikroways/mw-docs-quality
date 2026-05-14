@@ -1,10 +1,13 @@
 {
   "name": "@mikroways/docs-quality",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Herramientas de calidad de documentación para proyectos Mikroways (cSpell, markdownlint, CI templates)",
   "private": false,
   "publishConfig": {
     "@mikroways:registry": "https://gitlab.com/api/v4/projects/81783404/packages/npm/"
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "^0.21.0"
   },
   "dependencies": {
     "@cspell/dict-es-es": "*",

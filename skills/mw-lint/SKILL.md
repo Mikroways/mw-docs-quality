@@ -1,24 +1,23 @@
 ---
-name: mw-lint-config
-version: 1.7.0
+name: mw-lint
+version: 1.8.0
 description: |
   Verifica y aplica la configuración estándar de markdownlint y cSpell en un
   repositorio de documentación de Mikroways. Detecta configuraciones faltantes,
-  inconsistentes o desactualizadas, y puede aplicar la configuración base del
-  repo compartido (mikroways/cspell-config).
-  Usar cuando se quiera auditar o configurar el linting de Markdown en un repo.
-  Triggers: "verificar lint", "configurar cspell", "aplicar lint config",
-  "revisar markdownlint", "mw-lint-config".
+  inconsistentes o desactualizadas, y aplica la configuración base del repo
+  compartido (@mikroways/cspell-config). Usar siempre que se mencione lint,
+  cSpell, markdownlint, palabras desconocidas, errores de ortografía, o se
+  quiera auditar, configurar o corregir la calidad de un repo de docs de
+  Mikroways, aunque el usuario no diga explícitamente "/mw-lint".
 allowed-tools:
   - Read
   - Write
   - Edit
   - Bash
-  - Glob
   - Grep
 ---
 
-# mw-lint-config — Verificar y aplicar configuración de linting
+# mw-lint — Verificar y aplicar configuración de linting
 
 Auditá y/o configurá markdownlint y cSpell en el repositorio actual.
 
@@ -132,10 +131,12 @@ done
 ```
 
 Interpretar la salida:
+
 - `palabra * dict-name` → encontrada en ese dict (si el dict tiene `*` al final, está activo en el proyecto)
 - Si `dict-name` **no** tiene `*` al final → el dict está disponible pero no habilitado en `.cspell.json`
 
 Criterio de decisión:
+
 - La palabra está en un dict **ya activo** → eliminar del custom (redundante)
 - La palabra está en un dict **no activo**, y ese dict cubre varias palabras de la misma categoría → **habilitar el dict** en `"dictionaries"` del `.cspell.json` del proyecto y eliminar esas palabras del custom
 - La palabra **no está en ningún dict** → debe permanecer en el custom
@@ -176,7 +177,7 @@ Solo si no está en ningún built-in, agregar al archivo `.txt` del repo compart
 
 #### Cómo actualizar los diccionarios
 
-**Paso 0 — Localizar el repo compartido**
+##### Paso 0 — Localizar el repo compartido
 
 ```bash
 CSPELL_REPO=$(find ~ -maxdepth 5 -name "cspell.base.json" -path "*/mw-cspell-config/*" 2>/dev/null | head -1 | xargs -r dirname)
@@ -191,7 +192,7 @@ cd ~/mw/cspell-config && npm install
 CSPELL_REPO=~/mw/cspell-config
 ```
 
-**Paso 1 — Verificar que la palabra no está en dicts built-in**
+##### Paso 1 — Verificar que la palabra no está en dicts built-in
 
 ```bash
 cd "$CSPELL_REPO/cspell-test"
@@ -202,7 +203,7 @@ cd "$CSPELL_REPO/cspell-test"
 La columna `F` muestra `*` si la palabra fue encontrada. Si aparece en algún dict
 estándar, no agregarla al custom.
 
-**Paso 2 — Elegir el archivo correcto**
+##### Paso 2 — Elegir el archivo correcto
 
 | Archivo | Cuándo agregar aquí |
 |---------|---------------------|
@@ -213,14 +214,15 @@ estándar, no agregarla al custom.
 | `dictionaries/databases.txt` | Herramientas, comandos, variables de entorno de bases de datos |
 | `dictionaries/mikroways.txt` | Términos y nombres propios exclusivos de Mikroways |
 
-**Paso 3 — Agregar la palabra**
+##### Paso 3 — Agregar la palabra
 
 Reglas:
+
 1. Una sola forma en minúscula es suficiente (`caseSensitive: false` en la config base)
 2. Mantener orden alfabético dentro de cada sección
 3. Agregar en la sección temática correcta del archivo (cada `.txt` tiene secciones con comentarios `#`)
 
-**Paso 4 — Publicar**
+##### Paso 4 — Publicar
 
 La publicación es automática vía CI al crear un tag. Primero bumping de versión en `package.json`,
 luego:
@@ -264,7 +266,7 @@ en `ignorePaths` o `words` del proyecto.
 
 Si no existe:
 
-```
+```bash
 @mikroways:registry=https://gitlab.com/api/v4/packages/npm/
 ```
 
@@ -295,6 +297,7 @@ npm install
 > **Atención**: si `node_modules/` ya existe con cualquier versión de `@mikroways/cspell-config`,
 > `npm install` no actualizará el paquete (cualquier versión satisface `"*"`). Para forzar la
 > actualización usar:
+>
 > ```bash
 > npm install @mikroways/cspell-config@latest
 > ```
@@ -376,9 +379,10 @@ nuevas. Como los diccionarios cambian seguido, el job se desacopla del anchor
 y fuerza `@latest` en cada ejecución, garantizando los diccionarios al día.
 
 **Notas de CI**:
+
 - El `stage: validate` debe existir en `stages:` del proyecto. Si no existe, agregarlo.
 - Los jobs del template usan `allow_failure: true` mientras se corrigen errores
-  existentes. Para hacerlos bloqueantes, sobreescribir el job en el CI del
+  existentes. Para hacerlos bloqueantes, sobrescribir el job en el CI del
   proyecto.
 - El runner necesita acceso al GitLab Package Registry de Mikroways para
   descargar `@mikroways/cspell-config`. También necesita acceso al proyecto

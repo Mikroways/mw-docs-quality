@@ -1,3 +1,37 @@
+workflow:
+  rules:
+    - if: "$CI_PIPELINE_SOURCE == \"merge_request_event\""
+    - if: "$CI_COMMIT_BRANCH"
+    - if: "$CI_COMMIT_TAG"
+
+stages:
+  - validate
+  - deploy
+
+include:
+  - local: .gitlab/ci/lint.yml
+  - local: .gitlab/ci/marco-tecnico.yml
+
+# Overrides: este repo usa los archivos locales, no el paquete publicado.
+validate-lint:
+  extends: .mw-lint-npm
+  allow_failure: true
+  before_script:
+    - npm install
+
+validate-spelling:
+  image: node:22-alpine
+  stage: validate
+  allow_failure: true
+  script:
+    - npm install
+    - npx cspell "**/*.md"
+
+# Override: este repo no tiene docs/, el marcador está en README.md.
+validate-skill-version-docs:
+  variables:
+    SKILL_DOCS_PATH: README.md
+
 publish:
   stage: deploy
   image: node:22.18.0-alpine

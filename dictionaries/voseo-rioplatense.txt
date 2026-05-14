@@ -9,6 +9,7 @@ ajustá
 agregá
 anunciá
 asigná
+auditá
 borrá
 chequeá
 comunicá

@@ -1,0 +1,16 @@
+{
+  "version": "0.2",
+  "import": ["./cspell.base.json"],
+  "language": "es,en",
+  "dictionaryDefinitions": [
+    {
+      "name": "es-es",
+      "path": "./node_modules/@cspell/dict-es-es/Spanish.trie.gz"
+    },
+    {
+      "name": "es-ar",
+      "path": "./node_modules/dictionary-es-ar/index.dic"
+    }
+  ],
+  "words": []
+}

@@ -33,7 +33,7 @@ El proyecto consumidor necesita 4 archivos:
 Le dice a npm cómo resolver el scope `@mikroways` desde el GitLab Package
 Registry de Mikroways:
 
-```
+```bash
 @mikroways:registry=https://gitlab.com/api/v4/packages/npm/
 ```
 
@@ -68,7 +68,7 @@ config:
   extends: ./node_modules/@mikroways/cspell-config/markdownlint.json
 ```
 
-Para sobreescribir alguna regla de la base, agregarla bajo `config:` del lado
+Para sobrescribir alguna regla de la base, agregarla bajo `config:` del lado
 del proyecto (es prioritaria sobre lo extendido).
 
 ## Instalación
@@ -206,22 +206,24 @@ Instala `cspell` y los diccionarios de español en `node_modules`, que es lo que
 
 ## Skill de Claude Code
 
-Este repo incluye el skill `mw-lint-config` para Claude Code, que automatiza la
+<!-- skill-version: mw-lint 1.8.0 -->
+
+Este repo incluye el skill `mw-lint` para Claude Code, que automatiza la
 auditoría y configuración de cSpell y markdownlint en repositorios de Mikroways.
 
 ### Instalación del skill
 
 ```bash
 git clone git@gitlab.com:mikroways/tools/mw-cspell-config.git
-ln -s "$(pwd)/mw-cspell-config/skills/mw-lint-config" ~/.claude/skills/mw-lint-config
+ln -s "$(pwd)/mw-cspell-config/skills/mw-lint" ~/.claude/skills/mw-lint
 ```
 
 ### Uso
 
 Desde cualquier repositorio de documentación, invocar el skill en Claude Code:
 
-```
-/mw-lint-config
+```bash
+/mw-lint
 ```
 
 El skill detecta el estado actual de cSpell y markdownlint, reporta inconsistencias
