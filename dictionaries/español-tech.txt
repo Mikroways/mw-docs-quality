@@ -35,7 +35,6 @@ autogeneradas
 autogenerados
 autogestiona
 autogestionadas
-autogestionadas
 autogestionados
 automatizable
 automatizables
@@ -128,7 +127,6 @@ proactivamente
 provisiona
 provisionada
 provisionadas
-provisionado
 provisionados
 provisionamiento
 provisione
@@ -162,9 +160,6 @@ reprovisionar
 resguardarlos
 resincronizar
 respaldable
-sobrescribir
-sobrescrito
-sobrescritos
 sobrescritura
 subcomando
 subcomandos
@@ -239,7 +234,6 @@ deployar
 desactualizan
 dockerizar
 drifteada
-enrutar
 enrutaste
 flaggeada
 flaggeadas
@@ -293,8 +287,13 @@ prototipan
 prototipar
 proxea
 proxear
+pusheada
+pusheadas
+pusheado
+pusheados
 pushean
 pushear
+pushearse
 recifra
 recifrándola
 recifrándolas

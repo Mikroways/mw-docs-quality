@@ -1,0 +1,99 @@
+# Validaciones de calidad de los diccionarios custom de Mikroways.
+
+# Verifica que ninguna palabra de los diccionarios custom ya esté cubierta
+# por los diccionarios estándar de español (es-es, es-ar).
+validate-dict-builtin:
+  stage: validate
+  image: node:22.18.0-alpine
+  cache:
+    - key:
+        files:
+          - package.json
+      paths:
+        - node_modules/
+  before_script:
+    - npm install
+  script:
+    - |
+      failed=0
+      cd cspell-test
+      for dict_file in ../dictionaries/*.txt; do
+        dict_name=$(basename "$dict_file")
+        echo "=== $dict_name ==="
+
+        set --
+        while IFS= read -r word; do
+          case "$word" in \#*|"") continue ;; esac
+          set -- "$@" "$word"
+        done < "$dict_file"
+
+        [ $# -eq 0 ] && echo "OK (vacío)" && continue
+
+        trace=$(../node_modules/.bin/cspell trace --no-color "$@" 2>/dev/null || true)
+
+        dict_failed=0
+        for word in "$@"; do
+          result=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && ($3~/^es-es/ || $3~/^es-ar/)' | head -1)
+          if [ -n "$result" ]; then
+            echo "  ERROR: '$word' ya está en un diccionario estándar de español"
+            dict_failed=1
+            failed=1
+          fi
+        done
+        [ "$dict_failed" -eq 0 ] && echo "  OK"
+      done
+      exit $failed
+
+# Verifica que no haya palabras repetidas entre los diferentes diccionarios.
+validate-dict-duplicates:
+  stage: validate
+  image: alpine:3.21
+  script:
+    - |
+      dups=$(cat dictionaries/*.txt | grep -v "^#" | grep -v "^[[:space:]]*$" | sort | uniq -d)
+      if [ -n "$dups" ]; then
+        echo "ERROR: palabras duplicadas entre diccionarios:"
+        printf '%s\n' "$dups"
+        exit 1
+      fi
+      echo "OK: no hay palabras duplicadas"
+
+# Verifica que las palabras de cada sección estén en orden alfabético.
+validate-dict-order:
+  stage: validate
+  image: alpine:3.21
+  script:
+    - |
+      failed=0
+      tmp_actual=$(mktemp)
+      tmp_sorted=$(mktemp)
+      for dict in dictionaries/*.txt; do
+        dict_failed=0
+        section="(inicio)"
+
+        flush_section() {
+          if [ -s "$tmp_actual" ]; then
+            sort -f < "$tmp_actual" > "$tmp_sorted"
+            if ! diff -q "$tmp_actual" "$tmp_sorted" > /dev/null 2>&1; then
+              echo "ERROR: $dict ($section) no está en orden alfabético:"
+              diff "$tmp_actual" "$tmp_sorted"
+              dict_failed=1
+            fi
+          fi
+          : > "$tmp_actual"
+        }
+
+        while IFS= read -r line; do
+          case "$line" in
+            \#*) flush_section; section="$line" ;;
+            "")  flush_section ;;
+            *)   printf '%s\n' "$line" >> "$tmp_actual" ;;
+          esac
+        done < "$dict"
+        flush_section
+
+        [ "$dict_failed" -eq 0 ] && echo "OK: $dict"
+        [ "$dict_failed" -ne 0 ] && failed=1
+      done
+      rm -f "$tmp_actual" "$tmp_sorted"
+      exit $failed

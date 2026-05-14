@@ -65,14 +65,14 @@ restoreuser
 
 # Productos y plataformas
 awscli
-supervisord
 myapp
+supervisord
 veeam
 webservers
 
 # Seguridad y autenticación
-authy
 authorizedkeysfile
+authy
 backdoors
 forti
 multifactor

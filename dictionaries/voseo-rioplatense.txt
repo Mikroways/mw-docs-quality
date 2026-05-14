@@ -5,8 +5,8 @@
 
 # Imperativo vos — instrucciones técnicas
 actualizá
-ajustá
 agregá
+ajustá
 anunciá
 asigná
 auditá
@@ -45,8 +45,8 @@ reemplazá
 respondé
 utilizá
 verificá
-verificalos
 verificalo
+verificalos
 
 # Presente indicativo vos
 considerás

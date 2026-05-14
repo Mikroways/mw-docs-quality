@@ -36,9 +36,9 @@ xtrabackup
 mongodump
 
 # Operadores y herramientas adicionales
+patroni
 pgbackrest
 pgbouncer
-patroni
 
 # Conceptos
 dedup
