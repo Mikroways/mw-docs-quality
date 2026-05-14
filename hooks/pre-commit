@@ -1,0 +1,12 @@
+#!/bin/sh
+# Ordena alfabéticamente (por sección) los archivos dictionaries/*.txt staged.
+set -e
+
+staged=$(git diff --cached --name-only --diff-filter=ACM | grep "^dictionaries/.*\.txt$" || true)
+[ -z "$staged" ] && exit 0
+
+for dict in $staged; do
+  [ -f "$dict" ] || continue
+  node scripts/sort-dict.js "$dict"
+  git add "$dict"
+done

@@ -77,6 +77,8 @@ validate-skill-version:
 validate-skill-version-docs:
   stage: validate
   image: alpine:3.21
+  variables:
+    SKILL_DOCS_PATH: docs/
   script:
     - |
       failed=0
@@ -89,16 +91,16 @@ validate-skill-version-docs:
           failed=1
           continue
         fi
-        docs_ver=$(grep -rh "skill-version: ${skill_name} " docs/ 2>/dev/null \
+        docs_ver=$(grep -rh "skill-version: ${skill_name} " ${SKILL_DOCS_PATH} 2>/dev/null \
           | grep -o '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*' | head -1 || true)
         if [ -z "$docs_ver" ]; then
-          echo "ERROR: no se encontró marcador skill-version para '$skill_name' en docs/"
+          echo "ERROR: no se encontró marcador skill-version para '$skill_name' en ${SKILL_DOCS_PATH}"
           failed=1
         elif [ "$docs_ver" != "$curr" ]; then
-          echo "ERROR: docs/ menciona $docs_ver del skill '$skill_name' pero SKILL.md dice $curr"
+          echo "ERROR: ${SKILL_DOCS_PATH} menciona $docs_ver del skill '$skill_name' pero SKILL.md dice $curr"
           failed=1
         else
-          echo "OK: skill '$skill_name' versión $curr coincide en SKILL.md y docs/"
+          echo "OK: skill '$skill_name' versión $curr coincide en SKILL.md y ${SKILL_DOCS_PATH}"
         fi
       done
       exit $failed
