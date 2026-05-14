@@ -54,7 +54,7 @@ validate-dict-builtin:
       trace=$(../node_modules/.bin/cspell trace --no-color "$@" 2>/dev/null || true)
 
       for word in "$@"; do
-        result=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && $3~/\*$/' | head -1)
+        result=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && $3~/\*$/ {print; exit}')
         if [ -n "$result" ]; then
           dict=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && $3~/\*$/ {print $3; exit}' | tr -d '*')
           echo "ERROR: '$word' ya está cubierto por el diccionario '$dict'"
