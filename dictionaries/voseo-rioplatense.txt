@@ -5,39 +5,60 @@
 
 # Imperativo vos — instrucciones técnicas
 actualizá
+ajustá
 agregá
+anunciá
+asigná
 borrá
 chequeá
+comunicá
 configurá
+confirmá
+consultá
+contactá
 corré
 creá
+declaralo
 ejecutá
 eliminá
 eliminalos
+empezá
+escalá
+esperá
+evaluá
 generá
+identificate
 indicá
 ingresá
 instalá
 levantá
 mirá
+pedila
 preferilo
+preguntá
 preguntás
 probá
 proporcioná
 recordá
 reemplazá
 respondé
+utilizá
 verificá
 verificalos
+verificalo
 
 # Presente indicativo vos
+considerás
 encontrás
+entendés
+esperés
 hacés
 necesitás
 perdés
 podés
 querés
 sabés
+solicitás
 tenés
 
 # Participios regionales

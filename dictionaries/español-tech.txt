@@ -4,11 +4,17 @@
 # caseSensitive: false → una sola forma (minúscula) cubre todas las capitalizaciones.
 
 # Sustantivos y adjetivos técnicos
+accionable
+accionables
 altísima
 amerita
 anonimizados
 aspiracionales
 auditabilidad
+asincrónica
+asincrónicas
+asincrónico
+asincrónicos
 autenticarnos
 autoactualizable
 autoactualizables
@@ -46,6 +52,8 @@ configurarlo
 consolidarlos
 contractualmente
 correctitud
+críptica
+críptico
 declarativamente
 declaratividad
 deduplicación
@@ -56,6 +64,7 @@ desadjuntar
 descomentar
 desconexión
 desconexiones
+desescalar
 desincronizado
 desincronizados
 desfasaje
@@ -66,12 +75,17 @@ disponibilizan
 disponibilizar
 efimeralidad
 eliminable
+enfoquémonos
 enlenteciendo
 entregable
 entregables
 escaneable
+escalación
 estáticamente
 exfiltrar
+facilitación
+facilitador
+facilitadora
 geolocalización
 geolocalizaciones
 idempotencia
@@ -86,6 +100,7 @@ interconectarse
 interconectividad
 interoperabilidad
 interoperar
+internalice
 listarlos
 mikroways
 milisegundos
@@ -96,8 +111,12 @@ multilínea
 nativamente
 observabilidad
 orquestador
+paralelización
 parametrizables
 penalizarnos
+prescriptiva
+prescriptivo
+proactivamente
 previsualizar
 provisiona
 provisionada
@@ -114,6 +133,9 @@ reconectarse
 reconfiguración
 reconfigurar
 reconfigurarse
+reconfigurada
+reconfiguradas
+reevaluar
 recuperabilidad
 redirigiéndola
 redirigiéndolas
@@ -122,6 +144,8 @@ redirigiéndolos
 regenerable
 regenerables
 regulatoria
+regulatorio
+regulatorios
 reprovisionada
 reprovisionadas
 reprovisionado
@@ -144,6 +168,7 @@ telcos
 transicionamos
 transicionar
 transparentemente
+triaje
 ubicarlo
 ubicarlos
 virtualización
@@ -193,6 +218,10 @@ customizada
 customizadas
 customizado
 customizados
+debuggea
+debuggeado
+debuggeando
+debuggear
 decomisiona
 decomisionar
 deployar
