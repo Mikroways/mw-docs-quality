@@ -58,42 +58,9 @@ validate-dict-duplicates:
       fi
       echo "OK: no hay palabras duplicadas"
 
-# Verifica que las palabras de cada sección estén en orden alfabético.
+# Verifica que las palabras de cada sección estén en orden alfabético (locale es).
 validate-dict-order:
   stage: validate
-  image: alpine:3.21
+  image: node:22.18.0-alpine
   script:
-    - |
-      failed=0
-      tmp_actual=$(mktemp)
-      tmp_sorted=$(mktemp)
-      for dict in dictionaries/*.txt; do
-        dict_failed=0
-        section="(inicio)"
-
-        flush_section() {
-          if [ -s "$tmp_actual" ]; then
-            LC_ALL=C sort -f < "$tmp_actual" > "$tmp_sorted"
-            if ! diff -q "$tmp_actual" "$tmp_sorted" > /dev/null 2>&1; then
-              echo "ERROR: $dict ($section) no está en orden alfabético:"
-              diff "$tmp_actual" "$tmp_sorted"
-              dict_failed=1
-            fi
-          fi
-          : > "$tmp_actual"
-        }
-
-        while IFS= read -r line; do
-          case "$line" in
-            \#*) flush_section; section="$line" ;;
-            "")  flush_section ;;
-            *)   printf '%s\n' "$line" >> "$tmp_actual" ;;
-          esac
-        done < "$dict"
-        flush_section
-
-        [ "$dict_failed" -eq 0 ] && echo "OK: $dict"
-        [ "$dict_failed" -ne 0 ] && failed=1
-      done
-      rm -f "$tmp_actual" "$tmp_sorted"
-      exit $failed
+    - node scripts/sort-dict.js --check dictionaries/*.txt

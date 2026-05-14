@@ -62,8 +62,8 @@ desactualizadas
 desactualizados
 desadjuntar
 descomentar
-desconexiones
 desconexión
+desconexiones
 desescalar
 desfasaje
 deshabilitación
@@ -86,8 +86,8 @@ exfiltrar
 facilitación
 facilitador
 facilitadora
-geolocalizaciones
 geolocalización
+geolocalizaciones
 idempotencia
 idempotente
 idempotentes
@@ -166,8 +166,8 @@ subcomandos
 subproceso
 subprocesos
 subredes
-subsecciones
 subsección
+subsecciones
 superusuario
 superusuarios
 telcos
