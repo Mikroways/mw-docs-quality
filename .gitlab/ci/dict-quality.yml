@@ -41,26 +41,28 @@ validate-dict-builtin:
       failed=0
       cd cspell-test
 
-      # Pasar todas las palabras nuevas a cspell trace de una sola vez.
-      tmpfile=$(mktemp)
-      printf '%s\n' "$words" > "$tmpfile"
+      # Construir la lista de palabras como argumentos posicionales.
+      wordsfile=$(mktemp)
+      printf '%s\n' "$words" > "$wordsfile"
       set --
       while IFS= read -r word; do
         [ -z "$word" ] && continue
         set -- "$@" "$word"
-      done < "$tmpfile"
-      rm "$tmpfile"
+      done < "$wordsfile"
+      rm "$wordsfile"
 
-      trace=$(../node_modules/.bin/cspell trace --no-color "$@" 2>/dev/null || true)
+      # Guardar el trace en archivo para evitar SIGPIPE al pipar una variable grande.
+      tracefile=$(mktemp)
+      ../node_modules/.bin/cspell trace --no-color "$@" > "$tracefile" 2>/dev/null || true
 
       for word in "$@"; do
-        result=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && $3~/\*$/ {print; exit}')
-        if [ -n "$result" ]; then
-          dict=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && $3~/\*$/ {print $3; exit}' | tr -d '*')
+        dict=$(awk -v w="$word" 'NR>1 && $1==w && $2=="*" && $3~/\*$/ {gsub(/\*$/, "", $3); print $3; exit}' "$tracefile")
+        if [ -n "$dict" ]; then
           echo "ERROR: '$word' ya está cubierto por el diccionario '$dict'"
           failed=1
         fi
       done
+      rm "$tracefile"
       [ "$failed" -eq 0 ] && echo "OK"
       exit $failed
 
