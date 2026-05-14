@@ -1,7 +1,7 @@
 # Validaciones de calidad de los diccionarios custom de Mikroways.
 
 # Verifica que ninguna palabra nueva (agregada en este commit/MR) ya esté
-# cubierta por los diccionarios estándar de español (es-es, es-ar).
+# cubierta por algún diccionario activo (es-es, es-ar, aws, k8s, bash, docker, etc.).
 validate-dict-builtin:
   stage: validate
   image: node:22.18.0-alpine
@@ -54,9 +54,10 @@ validate-dict-builtin:
       trace=$(../node_modules/.bin/cspell trace --no-color "$@" 2>/dev/null || true)
 
       for word in "$@"; do
-        result=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && ($3~/^es-es/ || $3~/^es-ar/)' | head -1)
+        result=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && $3~/\*$/' | head -1)
         if [ -n "$result" ]; then
-          echo "ERROR: '$word' ya está en un diccionario estándar de español"
+          dict=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && $3~/\*$/ {print $3; exit}' | tr -d '*')
+          echo "ERROR: '$word' ya está cubierto por el diccionario '$dict'"
           failed=1
         fi
       done
