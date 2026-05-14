@@ -12,7 +12,7 @@ for dict in $staged; do
   section_tmp=$(mktemp)
 
   flush_section() {
-    [ -s "$section_tmp" ] && sort -f < "$section_tmp" >> "$tmp"
+    [ -s "$section_tmp" ] && LC_ALL=C sort -f < "$section_tmp" >> "$tmp"
     : > "$section_tmp"
   }
 

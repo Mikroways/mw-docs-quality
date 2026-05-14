@@ -73,7 +73,7 @@ validate-dict-order:
 
         flush_section() {
           if [ -s "$tmp_actual" ]; then
-            sort -f < "$tmp_actual" > "$tmp_sorted"
+            LC_ALL=C sort -f < "$tmp_actual" > "$tmp_sorted"
             if ! diff -q "$tmp_actual" "$tmp_sorted" > /dev/null 2>&1; then
               echo "ERROR: $dict ($section) no está en orden alfabético:"
               diff "$tmp_actual" "$tmp_sorted"
