@@ -23,6 +23,8 @@ hocuspocus
 letsencrypt
 mkdocs
 nindent
+prueba
+prueva
 pyproject
 rollouts
 techdocs
