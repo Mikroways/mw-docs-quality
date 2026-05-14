@@ -1,7 +1,7 @@
 # Validaciones de calidad de los diccionarios custom de Mikroways.
 
-# Verifica que ninguna palabra de los diccionarios custom ya esté cubierta
-# por los diccionarios estándar de español (es-es, es-ar).
+# Verifica que ninguna palabra nueva (agregada en este commit/MR) ya esté
+# cubierta por los diccionarios estándar de español (es-es, es-ar).
 validate-dict-builtin:
   stage: validate
   image: node:22.18.0-alpine
@@ -12,36 +12,55 @@ validate-dict-builtin:
       paths:
         - node_modules/
   before_script:
+    - apk add --no-cache git
     - npm install
   script:
     - |
+      # Determinar el commit base: MR usa su base, push usa el commit anterior.
+      if [ -n "$CI_MERGE_REQUEST_DIFF_BASE_SHA" ]; then
+        BASE="$CI_MERGE_REQUEST_DIFF_BASE_SHA"
+      elif [ -n "$CI_COMMIT_BEFORE_SHA" ] && [ "$CI_COMMIT_BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+        BASE="$CI_COMMIT_BEFORE_SHA"
+      else
+        BASE=""
+      fi
+
+      if [ -n "$BASE" ]; then
+        words=$(git diff "$BASE" HEAD -- dictionaries/*.txt \
+          | grep '^+[^+]' | grep -v '^+#' | grep -v '^+[[:space:]]*$' | sed 's/^+//')
+      else
+        # Primer push a la branch: chequear todos los diccionarios.
+        words=$(grep -h -v '^#' dictionaries/*.txt | grep -v '^[[:space:]]*$')
+      fi
+
+      if [ -z "$words" ]; then
+        echo "OK: no hay palabras nuevas en los diccionarios"
+        exit 0
+      fi
+
       failed=0
       cd cspell-test
-      for dict_file in ../dictionaries/*.txt; do
-        dict_name=$(basename "$dict_file")
-        echo "=== $dict_name ==="
 
-        set --
-        while IFS= read -r word; do
-          case "$word" in \#*|"") continue ;; esac
-          set -- "$@" "$word"
-        done < "$dict_file"
+      # Pasar todas las palabras nuevas a cspell trace de una sola vez.
+      tmpfile=$(mktemp)
+      printf '%s\n' "$words" > "$tmpfile"
+      set --
+      while IFS= read -r word; do
+        [ -z "$word" ] && continue
+        set -- "$@" "$word"
+      done < "$tmpfile"
+      rm "$tmpfile"
 
-        [ $# -eq 0 ] && echo "OK (vacío)" && continue
+      trace=$(../node_modules/.bin/cspell trace --no-color "$@" 2>/dev/null || true)
 
-        trace=$(../node_modules/.bin/cspell trace --no-color "$@" 2>/dev/null || true)
-
-        dict_failed=0
-        for word in "$@"; do
-          result=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && ($3~/^es-es/ || $3~/^es-ar/)' | head -1)
-          if [ -n "$result" ]; then
-            echo "  ERROR: '$word' ya está en un diccionario estándar de español"
-            dict_failed=1
-            failed=1
-          fi
-        done
-        [ "$dict_failed" -eq 0 ] && echo "  OK"
+      for word in "$@"; do
+        result=$(printf '%s\n' "$trace" | awk -v w="$word" 'NR>1 && $1==w && $2=="*" && ($3~/^es-es/ || $3~/^es-ar/)' | head -1)
+        if [ -n "$result" ]; then
+          echo "ERROR: '$word' ya está en un diccionario estándar de español"
+          failed=1
+        fi
       done
+      [ "$failed" -eq 0 ] && echo "OK"
       exit $failed
 
 # Verifica que no haya palabras repetidas entre los diferentes diccionarios.
