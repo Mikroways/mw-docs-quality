@@ -199,10 +199,12 @@ El pipeline de GitLab detecta el tag y ejecuta `npm publish` al registro de GitL
 
 ```bash
 npm install
+ln -sf ../../hooks/pre-commit .git/hooks/pre-commit
 ```
 
-Instala `cspell` y los diccionarios de español en `node_modules`, que es lo que usa
-`cspell.base.json` para resolver sus paths relativos.
+`npm install` instala `cspell` y los diccionarios de español en `node_modules`.
+El pre-commit hook ordena automáticamente las palabras de cada sección en los
+archivos `dictionaries/*.txt` al commitear.
 
 ## Skill de Claude Code
 
