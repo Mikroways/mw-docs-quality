@@ -1,4 +1,4 @@
-# @mikroways/cspell-config
+# @mikroways/docs-quality
 
 Configuración compartida de **cSpell** y **markdownlint** para los proyectos de
 documentación de Mikroways. Provee:
@@ -22,7 +22,7 @@ El proyecto consumidor necesita 4 archivos:
 {
   "private": true,
   "devDependencies": {
-    "@mikroways/cspell-config": "*",
+    "@mikroways/docs-quality": "*",
     "markdownlint-cli2": "^0.21.0"
   }
 }
@@ -44,7 +44,7 @@ Importa la base + define palabras específicas del proyecto:
 ```json
 {
   "version": "0.2",
-  "import": ["./node_modules/@mikroways/cspell-config/cspell.base.json"],
+  "import": ["./node_modules/@mikroways/docs-quality/cspell.base.json"],
   "language": "es,en",
   "words": []
 }
@@ -65,7 +65,7 @@ globs:
   - "**/*.md"
   - "!node_modules/**"
 config:
-  extends: ./node_modules/@mikroways/cspell-config/markdownlint.json
+  extends: ./node_modules/@mikroways/docs-quality/markdownlint.json
 ```
 
 Para sobrescribir alguna regla de la base, agregarla bajo `config:` del lado
@@ -81,7 +81,7 @@ Para forzar la última versión del paquete (cuando `node_modules/` ya existe,
 `npm install` no actualiza porque cualquier versión satisface `"*"`):
 
 ```bash
-npm install @mikroways/cspell-config@latest
+npm install @mikroways/docs-quality@latest
 ```
 
 ## Comandos locales
@@ -91,7 +91,7 @@ npm install @mikroways/cspell-config@latest
 npx markdownlint-cli2
 
 # Cspell (ortografía) — siempre con la última versión del paquete
-npm install @mikroways/cspell-config@latest && npx cspell "**/*.md"
+npm install @mikroways/docs-quality@latest && npx cspell "**/*.md"
 ```
 
 ## GitLab CI
@@ -101,7 +101,7 @@ incluir el template compartido:
 
 ```yaml
 include:
-  - project: 'mikroways/tools/mw-cspell-config'
+  - project: 'mikroways/tools/mw-docs-quality'
     file: '/.gitlab/ci/lint.yml'
     ref: main
 
@@ -112,7 +112,7 @@ stages:
 El template provee:
 
 - `validate-lint`: corre `markdownlint-cli2` con caché de `node_modules`.
-- `validate-spelling`: instala `@mikroways/cspell-config@latest` sin caché en
+- `validate-spelling`: instala `@mikroways/docs-quality@latest` sin caché en
   cada ejecución para garantizar que los diccionarios estén siempre
   actualizados.
 
@@ -199,12 +199,15 @@ El pipeline de GitLab detecta el tag y ejecuta `npm publish` al registro de GitL
 
 ```bash
 npm install
-ln -sf ../../hooks/pre-commit .git/hooks/pre-commit
 ```
 
-`npm install` instala `cspell` y los diccionarios de español en `node_modules`.
-El pre-commit hook ordena automáticamente las palabras de cada sección en los
-archivos `dictionaries/*.txt` al commitear.
+`npm install` instala las dependencias y configura automáticamente el pre-commit
+hook vía el script `prepare` en `package.json`. El hook realiza tres
+validaciones al tocar cualquier `dictionaries/*.txt`:
+
+1. **Auto-ordena** alfabéticamente (locale español) cada diccionario modificado
+2. **Bloquea** si hay palabras duplicadas entre diccionarios
+3. **Bloquea** si una palabra nueva ya está cubierta por un dict built-in activo
 
 ## Skill de Claude Code
 
@@ -216,8 +219,8 @@ auditoría y configuración de cSpell y markdownlint en repositorios de Mikroway
 ### Instalación del skill
 
 ```bash
-git clone git@gitlab.com:mikroways/tools/mw-cspell-config.git
-ln -s "$(pwd)/mw-cspell-config/skills/mw-lint" ~/.claude/skills/mw-lint
+git clone git@gitlab.com:mikroways/tools/mw-docs-quality.git
+ln -s "$(pwd)/mw-docs-quality/skills/mw-lint" ~/.claude/skills/mw-lint
 ```
 
 ### Uso
