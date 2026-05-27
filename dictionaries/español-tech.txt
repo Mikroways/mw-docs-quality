@@ -195,7 +195,6 @@ ubicarlos
 virtualización
 virtualizado
 virtualizados
-zzztest
 
 # Spanglish — verbos tecnológicos y sus formas conjugadas
 backupeada
