@@ -6,6 +6,12 @@
 # Sustantivos y adjetivos técnicos
 accionable
 accionables
+ameritan
+auditables
+autohospedado
+autohospedada
+autohospedadas
+autohospedados
 altísima
 amerita
 anonimizados
@@ -48,6 +54,7 @@ bloqueantes
 bootstrapea
 cachés
 centralizarlos
+concurrentemente
 configurarlo
 consolidarlos
 contractualmente
@@ -61,6 +68,7 @@ definirla
 desactualizadas
 desactualizados
 desadjuntar
+desinstalaciones
 descomentar
 desconexión
 desconexiones
@@ -70,6 +78,7 @@ deshabilitación
 desincronicen
 desincronizado
 desincronizados
+desplegan
 disponibiliza
 disponibilizan
 disponibilizar
@@ -86,6 +95,8 @@ exfiltrar
 facilitación
 facilitador
 facilitadora
+gatillado
+gatillados
 geolocalización
 geolocalizaciones
 idempotencia
@@ -102,11 +113,13 @@ indexarlas
 indexarlos
 inicialización
 inicializarlo
+instanciar
 interconectarse
 interconectividad
 internalice
 interoperabilidad
 interoperar
+lexicográficamente
 listarlos
 mikroways
 milisegundos
@@ -132,6 +145,7 @@ provisionamiento
 provisione
 pseudocódigo
 reacomodamiento
+redesplegar
 reconecta
 reconectar
 reconectarse
@@ -161,6 +175,7 @@ resguardarlos
 resincronizar
 respaldable
 sobrescritura
+separándolos
 subcomando
 subcomandos
 subproceso
@@ -188,6 +203,9 @@ baneado
 baneando
 banear
 buildeada
+bumpeará
+bumpeado
+bumpear
 buildeadas
 buildeado
 buildeados
@@ -270,6 +288,7 @@ mergeado
 mergear
 mergearlo
 mergearse
+mergee
 overridear
 parseada
 parseadas
@@ -277,6 +296,16 @@ parseado
 parseados
 parsean
 parsear
+patchea
+patcheada
+patcheadas
+patcheado
+patchear
+pinneada
+pinneadas
+pinneado
+pinneados
+pinnear
 pivoteado
 pivoteamos
 pivoteando
@@ -310,6 +339,7 @@ renderizaremos
 rutear
 rutearemos
 rutearlos
+ruteo
 setea
 seteada
 seteadas
@@ -317,6 +347,7 @@ seteado
 seteados
 seteamos
 setean
+seteando
 setear
 setearla
 setearlas
@@ -329,6 +360,8 @@ templatizadas
 templatizado
 templatizados
 templatizar
+templetizando
+templetizar
 testeada
 testeadas
 testeado

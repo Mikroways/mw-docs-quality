@@ -46,6 +46,12 @@ crictl
 etcdctl
 kubeconfigs
 
+# Autoscaling y Cloud Controllers
+byocni
+crossplane
+karpenter
+kubeapiserver
+
 # Distribuciones y sabores
 alertmanager
 cloudnative

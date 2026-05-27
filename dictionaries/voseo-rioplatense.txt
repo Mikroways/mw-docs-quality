@@ -51,6 +51,7 @@ verificalos
 # Presente indicativo vos
 considerás
 encontrás
+pasás
 entendés
 esperés
 hacés

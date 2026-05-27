@@ -12,19 +12,28 @@
 # Para usarlas, habilitar esos dicts en el proyecto (ver .cspell.json).
 
 # CI/CD y GitOps
+bedag
+directus
 dockerfiles
+envoyproxy
 envsubst
 fontawesome
 frontmatter
 gitops
 gotemplate
+gotmpl
+helmchart
 helmfiles
+helmforge
 hocuspocus
+kubent
 letsencrypt
 mkdocs
 nindent
+openidconnect
 pyproject
 rollouts
+subhelmfiles
 techdocs
 
 # Monitoreo y observabilidad
@@ -38,6 +47,8 @@ pushgateway
 devtmpfs
 hipervisor
 hipervisores
+hypervisores
+RHEV
 qcow
 sesparse
 tmpfs

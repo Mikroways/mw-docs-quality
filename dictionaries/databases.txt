@@ -40,6 +40,9 @@ patroni
 pgbackrest
 pgbouncer
 
+# Alternativas y forks
+valkey
+
 # Conceptos
 dedup
 deduplica
