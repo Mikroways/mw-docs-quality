@@ -1,12 +1,21 @@
 #!/bin/sh
-# Ordena alfabéticamente (por sección) los archivos dictionaries/*.txt staged.
+# Validaciones locales para diccionarios custom.
 set -e
 
 staged=$(git -c core.quotePath=false diff --cached --name-only --diff-filter=ACM | grep "^dictionaries/.*\.txt$" || true)
 [ -z "$staged" ] && exit 0
 
+# 1. Ordenar alfabéticamente cada diccionario modificado
 for dict in $staged; do
   [ -f "$dict" ] || continue
   node scripts/sort-dict.js "$dict"
   git add "$dict"
 done
+
+# 2. Verificar que no haya palabras duplicadas entre todos los diccionarios
+dups=$(cat dictionaries/*.txt | grep -v "^#" | grep -v "^[[:space:]]*$" | sort | uniq -d)
+if [ -n "$dups" ]; then
+  echo "ERROR: palabras duplicadas entre diccionarios:"
+  printf '%s\n' "$dups"
+  exit 1
+fi
