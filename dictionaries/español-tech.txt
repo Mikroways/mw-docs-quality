@@ -6,14 +6,9 @@
 # Sustantivos y adjetivos técnicos
 accionable
 accionables
-ameritan
-auditables
-autohospedado
-autohospedada
-autohospedadas
-autohospedados
 altísima
 amerita
+ameritan
 anonimizados
 antipatrón
 asincrónica
@@ -22,6 +17,7 @@ asincrónico
 asincrónicos
 aspiracionales
 auditabilidad
+auditables
 autenticarnos
 autoactualizable
 autoactualizables
@@ -42,6 +38,10 @@ autogenerados
 autogestiona
 autogestionadas
 autogestionados
+autohospedada
+autohospedadas
+autohospedado
+autohospedados
 automatizable
 automatizables
 autosincronice
@@ -68,7 +68,6 @@ definirla
 desactualizadas
 desactualizados
 desadjuntar
-desinstalaciones
 descomentar
 desconexión
 desconexiones
@@ -78,6 +77,7 @@ deshabilitación
 desincronicen
 desincronizado
 desincronizados
+desinstalaciones
 desplegan
 disponibiliza
 disponibilizan
@@ -145,7 +145,6 @@ provisionamiento
 provisione
 pseudocódigo
 reacomodamiento
-redesplegar
 reconecta
 reconectar
 reconectarse
@@ -155,6 +154,7 @@ reconfiguradas
 reconfigurar
 reconfigurarse
 recuperabilidad
+redesplegar
 redirigiéndola
 redirigiéndolas
 redirigiéndolo
@@ -174,8 +174,8 @@ reprovisionar
 resguardarlos
 resincronizar
 respaldable
-sobrescritura
 separándolos
+sobrescritura
 subcomando
 subcomandos
 subproceso
@@ -203,13 +203,13 @@ baneado
 baneando
 banear
 buildeada
-bumpeará
-bumpeado
-bumpear
 buildeadas
 buildeado
 buildeados
 buildear
+bumpeado
+bumpear
+bumpeará
 checkeada
 checkeadas
 checkeado

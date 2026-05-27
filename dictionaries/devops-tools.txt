@@ -48,8 +48,8 @@ devtmpfs
 hipervisor
 hipervisores
 hypervisores
-RHEV
 qcow
+RHEV
 sesparse
 tmpfs
 
