@@ -19,3 +19,23 @@ if [ -n "$dups" ]; then
   printf '%s\n' "$dups"
   exit 1
 fi
+
+# 3. Verificar que las palabras nuevas no estén cubiertas por diccionarios built-in
+words=$(git -c core.quotePath=false diff --cached -- "dictionaries/*.txt" \
+  | grep '^+[^+]' | grep -v '^+#' | grep -v '^+[[:space:]]*$' | sed 's/^+//')
+[ -z "$words" ] && exit 0
+
+failed=0
+tracefile=$(mktemp)
+# shellcheck disable=SC2086
+cd cspell-test && ../node_modules/.bin/cspell trace --no-color $words > "$tracefile" 2>/dev/null || true
+
+for word in $words; do
+  dict=$(awk -v w="$word" 'NR>1 && $1==w && $2=="*" && $3~/\*$/ {gsub(/\*$/,"",$3); print $3; exit}' "$tracefile")
+  if [ -n "$dict" ]; then
+    echo "ERROR: '$word' ya está cubierto por el diccionario '$dict'"
+    failed=1
+  fi
+done
+rm "$tracefile"
+exit $failed
