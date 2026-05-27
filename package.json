@@ -3,6 +3,9 @@
   "version": "2.2.0",
   "description": "Herramientas de calidad de documentación para proyectos Mikroways (cSpell, markdownlint, CI templates)",
   "private": false,
+  "scripts": {
+    "prepare": "git config core.hooksPath hooks || true"
+  },
   "publishConfig": {
     "@mikroways:registry": "https://gitlab.com/api/v4/projects/81783404/packages/npm/"
   },
