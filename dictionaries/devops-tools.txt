@@ -19,6 +19,13 @@ envoyproxy
 envsubst
 fontawesome
 frontmatter
+gitignorea
+gitignoreada
+gitignoreadas
+gitignoreado
+gitignoreados
+gitignoreando
+gitignorear
 gitops
 gotemplate
 gotmpl
@@ -71,6 +78,7 @@ zstd
 backupuser
 direnv
 envrc
+NOPASSWD
 pseudofilesystems
 restoreuser
 
@@ -78,6 +86,7 @@ restoreuser
 awscli
 myapp
 supervisord
+tinyproxy
 veeam
 webservers
 

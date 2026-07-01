@@ -145,6 +145,12 @@ provisionamiento
 provisione
 pseudocódigo
 reacomodamiento
+reaprovisionada
+reaprovisionadas
+reaprovisionado
+reaprovisionados
+reaprovisionando
+reaprovisionar
 reconecta
 reconectar
 reconectarse
@@ -166,11 +172,6 @@ regulatoria
 regulatorias
 regulatorio
 regulatorios
-reprovisionada
-reprovisionadas
-reprovisionado
-reprovisionados
-reprovisionar
 resguardarlos
 resincronizar
 respaldable

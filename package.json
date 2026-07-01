@@ -1,6 +1,6 @@
 {
   "name": "@mikroways/docs-quality",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Herramientas de calidad de documentación para proyectos Mikroways (cSpell, markdownlint, CI templates)",
   "private": false,
   "scripts": {
