@@ -1,0 +1,27 @@
+---
+name: docs-quality
+
+on:
+  workflow_call:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    container: node:22-alpine
+    steps:
+      - name: Install git
+        run: apk add --no-cache git
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Markdownlint
+        run: npx markdownlint-cli2
+
+      - name: Cspell
+        run: |
+          npm install --no-save @mikroways/docs-quality@latest
+          npx cspell "**/*.md"

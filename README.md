@@ -121,36 +121,21 @@ adopción inicial.
 
 ## GitHub Actions
 
-Para proyectos alojados en GitHub, agregar un job `docs` al workflow:
+Este repo se espeja en GitHub (`Mikroways/mw-docs-quality`), lo que permite
+usar el mecanismo nativo de reusable workflows en lugar de copiar el job.
+
+En el workflow del proyecto consumidor:
 
 ```yaml
 jobs:
   docs:
-    runs-on: ubuntu-latest
-    container: node:22-alpine
-    steps:
-      - name: Install git
-        run: apk add --no-cache git
-
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install npm dependencies
-        run: npm install
-
-      - name: Markdownlint
-        run: npx markdownlint-cli2
-
-      - name: Cspell
-        run: |
-          npm install --no-save @mikroways/docs-quality@latest
-          npx cspell "**/*.md"
+    uses: Mikroways/mw-docs-quality/.github/workflows/lint.yml@main
 ```
 
-El job corre en un container `node:22-alpine` (equivalente al `image: node:22-alpine`
-del template de GitLab). El step Cspell reinstala `@mikroways/docs-quality@latest`
-sin caché para garantizar que los diccionarios estén siempre actualizados,
-independientemente de la versión pinneada en `package-lock.json`.
+El reusable workflow (`.github/workflows/lint.yml`) corre en un container
+`node:22-alpine`, equivalente al `image: node:22-alpine` del template de GitLab.
+Cspell reinstala `@mikroways/docs-quality@latest` sin caché en cada ejecución
+para garantizar diccionarios siempre actualizados.
 
 ## Diccionarios
 
