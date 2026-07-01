@@ -229,7 +229,7 @@ validaciones al tocar cualquier `dictionaries/*.txt`:
 
 ## Skill de Claude Code
 
-<!-- skill-version: mw-lint 1.8.0 -->
+<!-- skill-version: mw-lint 1.9.0 -->
 
 Este repo incluye el skill `mw-lint` para Claude Code, que automatiza la
 auditoría y configuración de cSpell y markdownlint en repositorios de Mikroways.

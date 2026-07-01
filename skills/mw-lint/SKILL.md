@@ -1,11 +1,11 @@
 ---
 name: mw-lint
-version: 1.8.0
+version: 1.9.0
 description: |
   Verifica y aplica la configuración estándar de markdownlint y cSpell en un
   repositorio de documentación de Mikroways. Detecta configuraciones faltantes,
   inconsistentes o desactualizadas, y aplica la configuración base del repo
-  compartido (@mikroways/cspell-config). Usar siempre que se mencione lint,
+  compartido (@mikroways/docs-quality). Usar siempre que se mencione lint,
   cSpell, markdownlint, palabras desconocidas, errores de ortografía, o se
   quiera auditar, configurar o corregir la calidad de un repo de docs de
   Mikroways, aunque el usuario no diga explícitamente "/mw-lint".
@@ -39,7 +39,7 @@ npx cspell "**/*.md" --no-progress 2>/dev/null | grep -c "Unknown word" || echo 
 
 Leer `.cspell.json`. Verificar:
 
-- [ ] `"import"` es `["./node_modules/@mikroways/cspell-config/cspell.base.json"]`
+- [ ] `"import"` es `["./node_modules/@mikroways/docs-quality/cspell.base.json"]`
 - [ ] **No** tiene `dictionaryDefinitions`, `dictionaries`, `ignoreRegExpList` ni `ignorePaths` propios — todo viene del base config vía import (desde v1.1.0)
 - [ ] `words` contiene **solo** términos específicos del proyecto (no vocabulario genérico)
 - [ ] Si tiene `ignorePaths`, son **solo paths específicos del proyecto** (no los universales como `node_modules/**`, `.venv/**`, `.agents/**`, `.planning/**`, `.claude/**`, `site/**`, `public/**`, `docs/todo-list.md`, `package-lock.json`, `uv.lock` — esos vienen de la base)
@@ -49,7 +49,7 @@ cat package.json 2>/dev/null | grep -E "cspell-config|markdownlint"
 cat .npmrc 2>/dev/null || echo ".npmrc FALTA"
 ```
 
-- [ ] `@mikroways/cspell-config: "*"` en `devDependencies` (las deps de diccionarios son transitivas)
+- [ ] `@mikroways/docs-quality: "*"` en `devDependencies` (las deps de diccionarios son transitivas)
 - [ ] `markdownlint-cli2` en `devDependencies`
 - [ ] `.npmrc` existe con `@mikroways:registry=https://gitlab.com/api/v4/packages/npm/`
 - [ ] `package-lock.json` en `.gitignore` (se usa `npm install`, no `npm ci`)
@@ -67,12 +67,12 @@ npx markdownlint-cli2 2>/dev/null | tail -3
 Verificar:
 
 - [ ] Existe `.markdownlint-cli2.yaml` con `globs:` y `config: { extends: ... }`
-- [ ] El `extends` apunta a `./node_modules/@mikroways/cspell-config/markdownlint.json`
+- [ ] El `extends` apunta a `./node_modules/@mikroways/docs-quality/markdownlint.json`
 - [ ] **No** existe `.markdownlint.json` independiente (las reglas vienen del extends desde v1.1.0)
 
 ### 1.3 Localizar el repo compartido cspell-config
 
-El repo compartido se consume como **paquete npm** (`@mikroways/cspell-config`), no como
+El repo compartido se consume como **paquete npm** (`@mikroways/docs-quality`), no como
 ruta relativa local. Verificar que el import no use rutas locales (`../../cspell-config/`),
 que son un antipatrón — solo funcionan en desarrollo local y rompen en CI.
 
@@ -81,10 +81,10 @@ que son un antipatrón — solo funcionan en desarrollo local y rompen en CI.
 grep '"import"' .cspell.json
 
 # Si npm install ya corrió, verificar que el paquete esté instalado
-ls node_modules/@mikroways/cspell-config/cspell.base.json 2>/dev/null || echo "paquete no instalado"
+ls node_modules/@mikroways/docs-quality/cspell.base.json 2>/dev/null || echo "paquete no instalado"
 
 # El repo fuente (para editar diccionarios) suele estar en:
-ls /home/juanpsm/mw/cspell-config/dictionaries/ 2>/dev/null \
+ls /home/juanpsm/mw/docs/mw-docs-quality/dictionaries/ 2>/dev/null \
   || echo "repo fuente no encontrado localmente"
 ```
 
@@ -97,7 +97,7 @@ Si el paquete no está instalado, ejecutar `npm install` antes de las fases de a
 ### 2.1 Detectar solapamientos entre diccionarios custom
 
 ```bash
-CSPELL_REPO=$(find ~ -maxdepth 5 -name "cspell.base.json" -path "*/mw-cspell-config/*" 2>/dev/null | head -1 | xargs -r dirname)
+CSPELL_REPO=$(find ~ -maxdepth 5 -name "cspell.base.json" -path "*/mw-docs-quality/*" 2>/dev/null | head -1 | xargs -r dirname)
 DICT_DIR="$CSPELL_REPO/dictionaries"
 # Detectar duplicados entre todos los diccionarios custom
 sort "$DICT_DIR"/*.txt | grep -v "^#" | grep -v "^$" | uniq -d
@@ -180,16 +180,16 @@ Solo si no está en ningún built-in, agregar al archivo `.txt` del repo compart
 ##### Paso 0 — Localizar el repo compartido
 
 ```bash
-CSPELL_REPO=$(find ~ -maxdepth 5 -name "cspell.base.json" -path "*/mw-cspell-config/*" 2>/dev/null | head -1 | xargs -r dirname)
+CSPELL_REPO=$(find ~ -maxdepth 5 -name "cspell.base.json" -path "*/mw-docs-quality/*" 2>/dev/null | head -1 | xargs -r dirname)
 echo "${CSPELL_REPO:-NO ENCONTRADO}"
 ```
 
 Si no está clonado, clonarlo antes de continuar:
 
 ```bash
-git clone git@gitlab.com:mikroways/tools/mw-cspell-config.git ~/mw/cspell-config
-cd ~/mw/cspell-config && npm install
-CSPELL_REPO=~/mw/cspell-config
+git clone git@gitlab.com:mikroways/tools/mw-docs-quality.git ~/mw/docs/mw-docs-quality
+cd ~/mw/docs/mw-docs-quality && npm install
+CSPELL_REPO=~/mw/docs/mw-docs-quality
 ```
 
 ##### Paso 1 — Verificar que la palabra no está en dicts built-in
@@ -244,7 +244,7 @@ Si no existe o le faltan elementos clave, crear/actualizar con la forma mínima:
 ```json
 {
   "version": "0.2",
-  "import": ["./node_modules/@mikroways/cspell-config/cspell.base.json"],
+  "import": ["./node_modules/@mikroways/docs-quality/cspell.base.json"],
   "language": "es,en",
   "words": []
 }
@@ -276,14 +276,14 @@ Si no existe:
 {
   "private": true,
   "devDependencies": {
-    "@mikroways/cspell-config": "*",
+    "@mikroways/docs-quality": "*",
     "markdownlint-cli2": "^0.21.0"
   }
 }
 ```
 
 Las deps de diccionarios (`@cspell/dict-es-es`, `dictionary-es-ar`) son transitivas del
-paquete `@mikroways/cspell-config` — no agregarlas directamente.
+paquete `@mikroways/docs-quality` — no agregarlas directamente.
 
 El `"*"` asegura que se instale la versión latest en una instalación desde cero. No commitear
 `package-lock.json`.
@@ -294,12 +294,12 @@ El `"*"` asegura que se instale la versión latest en una instalación desde cer
 npm install
 ```
 
-> **Atención**: si `node_modules/` ya existe con cualquier versión de `@mikroways/cspell-config`,
+> **Atención**: si `node_modules/` ya existe con cualquier versión de `@mikroways/docs-quality`,
 > `npm install` no actualizará el paquete (cualquier versión satisface `"*"`). Para forzar la
 > actualización usar:
 >
 > ```bash
-> npm install @mikroways/cspell-config@latest
+> npm install @mikroways/docs-quality@latest
 > ```
 
 ### 4.4 Aplicar .markdownlint-cli2.yaml estándar
@@ -312,14 +312,20 @@ Crear/actualizar `.markdownlint-cli2.yaml` con:
 ```yaml
 globs:
   - "**/*.md"
-  - "!node_modules/**"
-  - "!.venv/**"
-  - "!.agents/**"
-  - "!.planning/**"
-  - "!docs/todo-list.md"
+ignores:
+  - "node_modules/**"
+  - ".venv/**"
+  - ".agents/**"
+  - ".planning/**"
+  - "docs/todo-list.md"
 config:
-  extends: ./node_modules/@mikroways/cspell-config/markdownlint.json
+  extends: ./node_modules/@mikroways/docs-quality/markdownlint.json
 ```
+
+> **Por qué `ignores:` y no negaciones en `globs:`**: markdownlint-cli2 sigue symlinks al
+> expandir globs, lo que puede causar loops infinitos (ej. `roles/` → repo raíz → `roles/`).
+> La clave `ignores:` se aplica después de la expansión y corta el loop. Agregar en `ignores:`
+> cualquier directorio que contenga symlinks que apunten de vuelta al repo.
 
 Las reglas base (`default: true`, `MD013: false`, `MD046: { style: fenced }`,
 `MD060: false`) vienen del archivo extendido. Para overridear o agregar reglas
@@ -353,7 +359,7 @@ solo necesita incluirlo:
 
 ```yaml
 include:
-  - project: 'mikroways/tools/mw-cspell-config'
+  - project: 'mikroways/tools/mw-docs-quality'
     file: '/.gitlab/ci/lint.yml'
     ref: main
 
@@ -367,12 +373,12 @@ por el `include:` de arriba. El template provee:
 
 - `.mw-lint-npm`: anchor con caché de `node_modules` keyed on `package.json`
 - `validate-lint`: extiende `.mw-lint-npm` y corre `markdownlint-cli2`
-- `validate-spelling`: corre `npm install --no-save @mikroways/cspell-config@latest`
+- `validate-spelling`: corre `npm install --no-save @mikroways/docs-quality@latest`
   sin caché en cada ejecución, y luego `npx cspell "**/*.md"`
 
 **Por qué `validate-spelling` no usa caché**: el anchor cachea `node_modules/`
 con clave en `package.json`. Como `package.json` declara
-`@mikroways/cspell-config: "*"`, npm interpreta "cualquier versión satisface la
+`@mikroways/docs-quality: "*"`, npm interpreta "cualquier versión satisface la
 restricción"; una vez que la caché tiene cualquier versión instalada, `npm
 install` no la actualiza, aunque se publiquen versiones nuevas con palabras
 nuevas. Como los diccionarios cambian seguido, el job se desacopla del anchor
@@ -385,8 +391,25 @@ y fuerza `@latest` en cada ejecución, garantizando los diccionarios al día.
   existentes. Para hacerlos bloqueantes, sobrescribir el job en el CI del
   proyecto.
 - El runner necesita acceso al GitLab Package Registry de Mikroways para
-  descargar `@mikroways/cspell-config`. También necesita acceso al proyecto
-  `mikroways/tools/mw-cspell-config` para resolver el `include:`.
+  descargar `@mikroways/docs-quality`. También necesita acceso al proyecto
+  `mikroways/tools/mw-docs-quality` para resolver el `include:`.
+
+### 4.6 Agregar jobs de lint al CI/CD (GitHub Actions)
+
+Para proyectos alojados en GitHub, usar el reusable workflow del mirror GitHub
+de `mw-docs-quality` (`Mikroways/mw-docs-quality`):
+
+```yaml
+jobs:
+  docs:
+    uses: Mikroways/mw-docs-quality/.github/workflows/lint.yml@main
+```
+
+Agregar como job independiente en un workflow dedicado (ej. `.github/workflows/docs.yml`),
+no dentro del workflow de tests. El job corre en paralelo con otros jobs del pipeline.
+
+Si el proyecto no tiene `package.json` + `.npmrc` + `.cspell.json` + `.markdownlint-cli2.yaml`,
+crearlos según las secciones 4.2–4.4 antes de activar el job.
 
 ---
 
@@ -448,8 +471,8 @@ Reportar: warnings antes → warnings después.
 - **cspell v10 requiere Node.js >=22.18.0**. Con Node 22.14.0 o menor, cspell falla
   silenciosamente (0 warnings locales aunque haya errores). Verificar versión local con
   `node --version` y asegurar `nodejs 22.18.0` en `.tool-versions`.
-- **`@mikroways/cspell-config` se publica automáticamente vía CI** al hacer push de un tag
+- **`@mikroways/docs-quality` se publica automáticamente vía CI** al hacer push de un tag
   `v*` en el repo `mikroways/cspell-config`. No ejecutar `npm publish` manualmente.
 - **No usar rutas relativas locales** (`../../cspell-config/`) en el import de `.cspell.json` —
   solo funcionan en desarrollo local y rompen en CI. Siempre usar la ruta npm:
-  `./node_modules/@mikroways/cspell-config/cspell.base.json`.
+  `./node_modules/@mikroways/docs-quality/cspell.base.json`.
