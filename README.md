@@ -1,5 +1,8 @@
 # @mikroways/docs-quality
 
+> Repo fuente: [gitlab.com/mikroways/tools/mw-docs-quality](https://gitlab.com/mikroways/tools/mw-docs-quality) —
+> mirror de solo lectura en [github.com/Mikroways/mw-docs-quality](https://github.com/Mikroways/mw-docs-quality)
+
 Configuración compartida de **cSpell** y **markdownlint** para los proyectos de
 documentación de Mikroways. Provee:
 
@@ -11,6 +14,8 @@ documentación de Mikroways. Provee:
   `extends:`.
 - Template de GitLab CI (`.gitlab/ci/lint.yml`) con los jobs `validate-lint` y
   `validate-spelling` listos para incluir en cualquier proyecto.
+- Reusable workflow de GitHub Actions (`.github/workflows/lint.yml`) consumible
+  vía `uses: Mikroways/mw-docs-quality/.github/workflows/lint.yml@main`.
 
 ## Setup mínimo en un proyecto consumidor
 
@@ -121,7 +126,7 @@ adopción inicial.
 
 ## GitHub Actions
 
-Este repo se espeja en GitHub (`Mikroways/mw-docs-quality`), lo que permite
+Este repo se espeja en GitHub ([Mikroways/mw-docs-quality](https://github.com/Mikroways/mw-docs-quality)), lo que permite
 usar el mecanismo nativo de reusable workflows en lugar de copiar el job.
 
 En el workflow del proyecto consumidor:
