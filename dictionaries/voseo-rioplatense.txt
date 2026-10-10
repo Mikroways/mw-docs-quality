@@ -20,6 +20,11 @@ consultá
 contactá
 corré
 creá
+debugueá
+debugueala
+debuguealas
+debuguealo
+debuguealos
 declaralo
 definila
 definilas
@@ -32,6 +37,11 @@ empezá
 escalá
 esperá
 evaluá
+flagueá
+flagueala
+flaguealas
+flaguealo
+flaguealos
 generá
 identificate
 indicá
@@ -58,6 +68,11 @@ matchealos
 matcheate
 mirá
 pedila
+pineá
+pineala
+pinealas
+pinealo
+pinealos
 preferilo
 preguntá
 preguntás
@@ -67,6 +82,11 @@ reaprovisioná
 recordá
 reemplazá
 respondé
+tagueá
+tagueala
+taguealas
+taguealo
+taguealos
 utilizá
 verificá
 verificalo
@@ -75,9 +95,13 @@ verificalos
 # Presente indicativo vos
 conectás
 considerás
+debugueás
+debugueés
 encontrás
 entendés
 esperés
+flagueás
+flagueés
 hacés
 logueás
 logueés
@@ -88,12 +112,16 @@ matcheés
 necesitás
 pasás
 perdés
+pineás
+pineés
 podés
 probás
 querés
 reaprovisionás
 sabés
 solicitás
+tagueás
+tagueés
 tenés
 
 # Participios regionales

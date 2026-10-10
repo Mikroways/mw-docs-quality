@@ -54,7 +54,6 @@ pushgateway
 devtmpfs
 hipervisor
 hipervisores
-hypervisores
 qcow
 RHEV
 sesparse
