@@ -1,6 +1,6 @@
 ---
 name: mw-lint
-version: 1.9.0
+version: 1.9.1
 description: |
   Verifica y aplica la configuración estándar de markdownlint y cSpell en un
   repositorio de documentación de Mikroways. Detecta configuraciones faltantes,
@@ -464,7 +464,7 @@ Reportar: warnings antes → warnings después.
 - Ejecutar desde la **raíz del repositorio** a auditar.
 - No modificar archivos que ya cumplen el estándar.
 - `npx cspell trace` es la fuente de verdad para saber si una palabra ya está cubierta.
-- No agregar a los diccionarios custom palabras que deberían seguir siendo flaggeadas
+- No agregar a los diccionarios custom palabras que cspell debería seguir marcando
   (nombres propios que deben ir siempre en mayúscula, siglas de proyectos específicos, etc.).
 - Antes de agregar al repo compartido, confirmar con el usuario si el término
   es realmente genérico y reutilizable entre proyectos.
