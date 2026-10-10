@@ -16,6 +16,10 @@
 #   - .npmrc apuntando al GitLab Package Registry de Mikroways
 #   - .markdownlint-cli2.yaml con globs (puede extender la config compartida)
 #   - .cspell.json importando ./node_modules/@mikroways/docs-quality/cspell.base.json
+#
+# Los jobs corren solo en el pipeline del merge request. Correrlos otra vez en
+# main repetiría lo que el MR ya validó; lo que los cubre en main es que la
+# rama esté protegida y que el MR no se pueda mergear con el pipeline en rojo.
 
 .mw-lint-npm:
   image: node:22-alpine
@@ -33,6 +37,8 @@
 validate-lint:
   extends: .mw-lint-npm
   stage: validate
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   allow_failure: true
   script:
     - npx markdownlint-cli2
@@ -43,6 +49,8 @@ validate-lint:
 validate-spelling:
   image: node:22-alpine
   stage: validate
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   allow_failure: true
   script:
     - npm install --no-save @mikroways/docs-quality@latest
