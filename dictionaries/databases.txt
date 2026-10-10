@@ -8,11 +8,13 @@
 
 # PostgreSQL
 basebackup
+createrole
 dbfilename
 dbpassword
 dbuser
 dopenproject
 dpostgres
+nocreaterole
 pdbadm
 pgdata
 pgdump
