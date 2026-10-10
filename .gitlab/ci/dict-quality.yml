@@ -26,11 +26,13 @@ validate-dict-builtin:
       fi
 
       if [ -n "$BASE" ]; then
+        # || true: sin palabras nuevas, grep sale con 1 y pipefail cortaría el job
+        # antes de llegar al "OK" de más abajo.
         words=$(git diff "$BASE" HEAD -- dictionaries/*.txt \
-          | grep '^+[^+]' | grep -v '^+#' | grep -v '^+[[:space:]]*$' | sed 's/^+//')
+          | grep '^+[^+]' | grep -v '^+#' | grep -v '^+[[:space:]]*$' | sed 's/^+//' || true)
       else
         # Primer push a la branch: chequear todos los diccionarios.
-        words=$(grep -h -v '^#' dictionaries/*.txt | grep -v '^[[:space:]]*$')
+        words=$(grep -h -v '^#' dictionaries/*.txt | grep -v '^[[:space:]]*$' || true)
       fi
 
       if [ -z "$words" ]; then
