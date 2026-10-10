@@ -14,11 +14,17 @@
 #   - Skills en skills/*/SKILL.md con campo version:.
 #   - Marcador <!-- skill-version: <nombre> <version> --> en docs/ por cada skill.
 #   - Archivos bajo skills/*/assets/copy/ sincronizados con su fuente en el repo.
+#
+# Los jobs corren solo en el pipeline del merge request. Correrlos otra vez en
+# main repetiría lo que el MR ya validó; lo que los cubre en main es que la
+# rama esté protegida y que el MR no se pueda mergear con el pipeline en rojo.
 
 # Criterio 6.3: si se modifican archivos bajo skills/*/, exigir que la
 # versión del SKILL.md correspondiente haya sido incrementada.
 validate-skill-version:
   stage: validate
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   image: alpine:3.21
   variables:
     GIT_DEPTH: 0
@@ -76,6 +82,8 @@ validate-skill-version:
 # con la del SKILL.md. Convención: <!-- skill-version: <nombre> <version> -->
 validate-skill-version-docs:
   stage: validate
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   image: alpine:3.21
   variables:
     SKILL_DOCS_PATH: docs/
@@ -109,6 +117,8 @@ validate-skill-version-docs:
 # con su contraparte en el repositorio.
 validate-asset-copies:
   stage: validate
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   image: alpine:3.21
   script:
     - |
