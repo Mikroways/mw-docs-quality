@@ -165,8 +165,9 @@ commiteado. Para actualizar es-AR: subir la versión de `dictionary-es-ar` en
 `devDependencies`, correr `npm run build:es-ar` y commitear el trie.
 
 es-AR incluye muchas formas del voseo (`validá`, `volvés`), no todas: las que
-le faltan siguen en `voseo-rioplatense.txt`. No incluye las formas con pronombre
-enclítico (`rotarlo`, `purgarla`), porque sus reglas no las generan.
+le faltan siguen en `voseo-rioplatense.txt`. Las formas con pronombre pegado
+las genera solo para los verbos que tienen esa regla en el diccionario:
+reconoce `evaluarlo` y `dirigirlo`, pero no `rotarlo` ni `redirigirlos`.
 
 ### Diccionarios propios
 
