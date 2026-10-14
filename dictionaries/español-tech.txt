@@ -113,6 +113,7 @@ indexarlas
 indexarlos
 inicialización
 inicializarlo
+instalables
 instanciar
 interconectarse
 interconectividad
@@ -466,6 +467,7 @@ mergeadas
 mergeado
 mergear
 mergearlo
+mergearlos
 mergearse
 mergee
 overridear
@@ -551,6 +553,7 @@ recifrándolas
 recifrándolo
 recifrándolos
 recifrar
+renderiza
 renderizada
 renderizadas
 renderizado

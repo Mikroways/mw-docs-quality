@@ -11,16 +11,21 @@ innegociables
 interactivamente
 operativiza
 síncrona
+subcarpetas
 
 # Con prefijo re- (va pegado: reevaluar, no re-evaluar)
+reescritura
 reevalúa
 reevalúan
 rehidratación
 rehidratar
+reinstalación
 reinstalaciones
 
 # Verbos con pronombre pegado (es-AR tiene la regla solo para algunos verbos)
 chequeándolo
+configurarlos
+modelarlo
 purgarla
 redirigirlos
 rotarlo
