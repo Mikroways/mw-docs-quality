@@ -15,6 +15,11 @@
       "description": "Vocabulario propio de Mikroways"
     },
     {
+      "name": "mw-español",
+      "path": "./dictionaries/español.txt",
+      "description": "Palabras correctas del español ausentes en es-ES y es-AR"
+    },
+    {
       "name": "mw-español-tech",
       "path": "./dictionaries/español-tech.txt",
       "description": "Vocabulario español técnico latinoamericano: sustantivos, adjetivos, spanglish"
@@ -44,6 +49,7 @@
     "es-es",
     "es-ar",
     "mw-mikroways",
+    "mw-español",
     "mw-español-tech",
     "mw-voseo",
     "mw-kubernetes",
@@ -62,6 +68,7 @@
       "languageId": "*",
       "locale": "es,es_ES,es_AR",
       "dictionaries": [
+        "mw-español",
         "mw-español-tech",
         "mw-voseo"
       ],
