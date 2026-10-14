@@ -7,8 +7,6 @@
 accionable
 accionables
 altísima
-amerita
-ameritan
 anonimizados
 antipatrón
 asincrónica
@@ -72,8 +70,6 @@ definirla
 definirlas
 definirlo
 definirlos
-desactualizadas
-desactualizados
 desadjuntar
 descomentar
 desconexión
@@ -98,8 +94,6 @@ escaneable
 estáticamente
 exfiltrar
 facilitación
-facilitador
-facilitadora
 gatillado
 gatillados
 geolocalización
@@ -107,8 +101,6 @@ geolocalizaciones
 idempotencia
 idempotente
 idempotentes
-implicancia
-implicancias
 indentación
 indentada
 indentadas
@@ -136,9 +128,6 @@ mapearlo
 mapearlos
 mapeos
 milisegundos
-monitorea
-monitoreado
-monitoreados
 multilínea
 nativamente
 observabilidad
@@ -204,8 +193,6 @@ transicionamos
 transicionar
 transparentemente
 triaje
-ubicarlo
-ubicarlos
 virtualización
 virtualizado
 virtualizados
@@ -630,11 +617,6 @@ templatizado
 templatizados
 templatizando
 templatizar
-testeada
-testeadas
-testeado
-testeados
-testear
 trackeada
 trackeadas
 trackeado

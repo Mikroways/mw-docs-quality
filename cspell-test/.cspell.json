@@ -8,7 +8,7 @@
     },
     {
       "name": "es-ar",
-      "path": "../node_modules/dictionary-es-ar/index.dic"
+      "path": "../dictionaries/es-ar.trie.gz"
     }
   ],
   "dictionaries": [

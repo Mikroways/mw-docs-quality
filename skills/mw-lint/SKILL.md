@@ -1,6 +1,6 @@
 ---
 name: mw-lint
-version: 1.9.1
+version: 1.9.2
 description: |
   Verifica y aplica la configuración estándar de markdownlint y cSpell en un
   repositorio de documentación de Mikroways. Detecta configuraciones faltantes,
@@ -282,8 +282,9 @@ Si no existe:
 }
 ```
 
-Las deps de diccionarios (`@cspell/dict-es-es`, `dictionary-es-ar`) son transitivas del
-paquete `@mikroways/docs-quality` — no agregarlas directamente.
+Los diccionarios de español vienen con el paquete `@mikroways/docs-quality`:
+`@cspell/dict-es-es` como dependencia transitiva y es-AR ya compilado dentro del
+paquete. No agregarlos directamente.
 
 El `"*"` asegura que se instale la versión latest en una instalación desde cero. No commitear
 `package-lock.json`.

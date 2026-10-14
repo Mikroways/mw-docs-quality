@@ -7,7 +7,7 @@
     },
     {
       "name": "es-ar",
-      "path": "../../dictionary-es-ar/index.dic"
+      "path": "./dictionaries/es-ar.trie.gz"
     },
     {
       "name": "mw-mikroways",

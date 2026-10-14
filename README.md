@@ -144,6 +144,33 @@ para garantizar diccionarios siempre actualizados.
 
 ## Diccionarios
 
+### Español: es-ES y es-AR
+
+es-ES viene de [`@cspell/dict-es-es`](https://www.npmjs.com/package/@cspell/dict-es-es),
+ya compilado para cspell. es-AR viene de
+[`dictionary-es-ar`](https://www.npmjs.com/package/dictionary-es-ar), que está en
+formato hunspell: cada entrada es una raíz con reglas de flexión
+(`rotar/RED`). cspell no aplica esas reglas y lee el `.dic` como una lista
+plana, así que solo reconocía las entradas sin reglas, unas 8.000 de 56.563.
+
+Por eso es-AR se compila a `dictionaries/es-ar.trie.gz` con las herramientas de
+cspell, que sí expanden las reglas:
+
+```bash
+npm run build:es-ar
+```
+
+El job `validate-es-ar-trie` regenera el trie y falla si no coincide con el
+commiteado. Para actualizar es-AR: subir la versión de `dictionary-es-ar` en
+`devDependencies`, correr `npm run build:es-ar` y commitear el trie.
+
+es-AR incluye muchas formas del voseo (`validá`, `volvés`), no todas: las que
+le faltan siguen en `voseo-rioplatense.txt`. Las formas con pronombre pegado
+las genera solo para los verbos que tienen esa regla en el diccionario:
+reconoce `evaluarlo` y `dirigirlo`, pero no `rotarlo` ni `redirigirlos`.
+
+### Diccionarios propios
+
 | Archivo | Dict name | Contenido |
 |---|---|---|
 | `dictionaries/español-tech.txt` | `mw-español-tech` | Sustantivos/adjetivos técnicos en español, spanglish conjugado |
@@ -234,7 +261,7 @@ validaciones al tocar cualquier `dictionaries/*.txt`:
 
 ## Skill de Claude Code
 
-<!-- skill-version: mw-lint 1.9.1 -->
+<!-- skill-version: mw-lint 1.9.2 -->
 
 Este repo incluye el skill `mw-lint` para Claude Code, que automatiza la
 auditoría y configuración de cSpell y markdownlint en repositorios de Mikroways.

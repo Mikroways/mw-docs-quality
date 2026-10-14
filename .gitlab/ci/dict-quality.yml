@@ -88,3 +88,16 @@ validate-dict-order:
   image: node:22.18.0-alpine
   script:
     - node scripts/sort-dict.js --check dictionaries/*.txt
+
+# El trie de es-AR se genera de dictionary-es-ar con `npm run build:es-ar`
+# (ver README). Se compara el contenido descomprimido: la compilación es
+# determinista, pero el gzip puede variar entre versiones de zlib.
+validate-es-ar-trie:
+  stage: validate
+  image: node:22.18.0-alpine
+  script:
+    - npm install
+    - gunzip -c dictionaries/es-ar.trie.gz > /tmp/es-ar.commiteado
+    - npm run build:es-ar
+    - gunzip -c dictionaries/es-ar.trie.gz > /tmp/es-ar.generado
+    - cmp /tmp/es-ar.commiteado /tmp/es-ar.generado
