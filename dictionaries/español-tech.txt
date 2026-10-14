@@ -16,6 +16,7 @@ asincrónicos
 aspiracionales
 auditabilidad
 auditables
+autenticadores
 autenticarnos
 autoactualizable
 autoactualizables
@@ -81,9 +82,11 @@ desincronicen
 desincronizado
 desincronizados
 desinstalaciones
+desinstalador
 disponibiliza
 disponibilizan
 disponibilizar
+drenables
 efimeralidad
 eliminable
 enfoquémonos
@@ -127,6 +130,7 @@ mapearlas
 mapearlo
 mapearlos
 mapeos
+microservicios
 milisegundos
 multilínea
 nativamente
@@ -135,6 +139,7 @@ orquestador
 paralelización
 parametrizables
 penalizarnos
+preinstalados
 prescriptiva
 prescriptivo
 previsualizar
@@ -183,6 +188,8 @@ subcomando
 subcomandos
 subproceso
 subprocesos
+subrecursos
+subred
 subredes
 subsección
 subsecciones
@@ -203,14 +210,17 @@ backupeado
 baneado
 baneando
 banear
+bootstrapear
 buildeada
 buildeadas
 buildeado
 buildeados
 buildear
+bumpea
 bumpeado
 bumpear
 bumpeará
+bumpeó
 cifrarla
 cifrarlas
 cifrarlo
@@ -344,6 +354,7 @@ forwardeadas
 forwardeado
 forwardeados
 forwardear
+gatillan
 hardcodea
 hardcodeada
 hardcodeadas
@@ -524,6 +535,7 @@ preseteados
 prototipa
 prototipan
 prototipar
+provisionamos
 proxea
 proxear
 pusheada
@@ -546,10 +558,13 @@ renderizados
 renderizan
 renderizar
 renderizaremos
+rutean
 rutear
 rutearemos
 rutearlos
 ruteo
+scaffoldee
+scrapeando
 setea
 seteada
 seteadas
@@ -641,4 +656,5 @@ tunelizados
 tunelizan
 tunelizar
 versionarlas
+versionarlo
 versionarlos

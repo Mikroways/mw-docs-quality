@@ -1,0 +1,26 @@
+# Español general
+# Palabras correctas del español ausentes en es-ES y en es-AR.
+# NO incluye vocabulario técnico ni spanglish (ver español-tech.txt) ni voseo (ver voseo-rioplatense.txt).
+# caseSensitive: false → una sola forma (minúscula) cubre todas las capitalizaciones.
+
+# Palabras y derivados
+admoniciones
+desactualiza
+descartable
+innegociables
+interactivamente
+operativiza
+síncrona
+
+# Con prefijo re- (va pegado: reevaluar, no re-evaluar)
+reevalúa
+reevalúan
+rehidratación
+rehidratar
+reinstalaciones
+
+# Verbos con pronombre pegado (es-AR tiene la regla solo para algunos verbos)
+chequeándolo
+purgarla
+redirigirlos
+rotarlo

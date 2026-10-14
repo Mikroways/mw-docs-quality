@@ -52,22 +52,27 @@ pushgateway
 
 # Virtualización e hipervisores
 devtmpfs
+govc
 hipervisor
 hipervisores
+portgroup
 qcow
 RHEV
 sesparse
 tmpfs
+vcenters
 
 # Object storage y filesystem
 garagehq
 lmdb
+multipathd
 objectstore
 seaweedfs
 startswith
 
 # Sistemas operativos / shell
 auxf
+firewalld
 tlnp
 ulnp
 xvdf
@@ -79,6 +84,7 @@ direnv
 envrc
 NOPASSWD
 pseudofilesystems
+pubkeys
 restoreuser
 
 # Productos y plataformas
@@ -93,8 +99,10 @@ webservers
 authorizedkeysfile
 authy
 backdoors
+enddate
 forti
 multifactor
+noout
 totp
 yubi
 
@@ -122,3 +130,8 @@ venv
 
 # Teleport
 tbot
+
+# Redes
+datapath
+gbps
+vxlan

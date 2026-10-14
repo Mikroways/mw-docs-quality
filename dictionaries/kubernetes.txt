@@ -5,6 +5,8 @@
 accessmode
 persistentvolumes
 pvcs
+readyz
+secretbox
 storageclasses
 
 # Volume Snapshots (API group: snapshot.storage.k8s.io)
@@ -29,9 +31,14 @@ helmreleases
 kustomizations
 
 # Cluster API (CAPI)
+capmox
+capv
 clusterapi
+kubeadmcontrolplane
 kubeadmcontrolplanes
+machinedeployment
 machinedeployments
+machinetemplate
 nullprovider
 
 # Velero
@@ -44,6 +51,7 @@ scheduledbackup
 clusterctl
 crictl
 etcdctl
+etcdutl
 kubeconfigs
 
 # Autoscaling y Cloud Controllers
@@ -59,3 +67,15 @@ cloudnativepg
 cnpg
 doks
 kyverno
+
+# OKD / OpenShift
+clusterversion
+kubeadmin
+kubecontrollermanager
+kubescheduler
+pullspec
+scos
+
+# K3s
+klipper
+servicelb

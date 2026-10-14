@@ -173,6 +173,7 @@ reconoce `evaluarlo` y `dirigirlo`, pero no `rotarlo` ni `redirigirlos`.
 
 | Archivo | Dict name | Contenido |
 |---|---|---|
+| `dictionaries/español.txt` | `mw-español` | Palabras correctas del español ausentes en es-ES y es-AR (derivados, prefijo re-, verbos con pronombre) |
 | `dictionaries/español-tech.txt` | `mw-español-tech` | Sustantivos/adjetivos técnicos en español, spanglish conjugado |
 | `dictionaries/voseo-rioplatense.txt` | `mw-voseo` | Formas verbales del voseo rioplatense (imperativo y presente) |
 | `dictionaries/kubernetes.txt` | `mw-kubernetes` | CRDs, recursos K8s nativos, CLI tools del ecosistema |
