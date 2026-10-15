@@ -31,6 +31,8 @@ helmreleases
 kustomizations
 
 # Cluster API (CAPI)
+capk
+capm
 capmox
 capv
 clusterapi
