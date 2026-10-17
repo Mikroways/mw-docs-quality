@@ -14,9 +14,6 @@ documentación de Mikroways. Provee:
   `extends:`.
 - Template de GitLab CI (`.gitlab/ci/lint.yml`) con los jobs `validate-lint` y
   `validate-spelling` listos para incluir en cualquier proyecto.
-- Template de GitLab CI (`.gitlab/ci/skill-version.yml`) con el job
-  `validate-skill-version`, para los repos con skills propias en `skills/`:
-  exige que la versión suba si la skill cambió.
 - Hook de pre-commit para repos de documentación (`hooks/marco/pre-commit`):
   markdownlint y cSpell sobre los `.md` del commit, y `docs/todo-list.md`
   regenerado si el repo tiene `mkdocs.todo.yml`.
@@ -74,15 +71,26 @@ el proyecto tiene paths que no están cubiertos por la base (`node_modules/**`,
 
 ### 4. `.markdownlint-cli2.yaml`
 
-Define los globs y extiende la config compartida:
+Define los globs, las exclusiones y extiende la config compartida:
 
 ```yaml
 globs:
   - "**/*.md"
-  - "!node_modules/**"
+ignores:
+  - "node_modules/**"
+  - ".venv/**"
+  - ".agents/**"
+  - ".claude/**"
+  - "site/**"
+  - "docs/todo-list.md"
 config:
   extends: ./node_modules/@mikroways/docs-quality/markdownlint.json
 ```
+
+Las exclusiones van en `ignores:` y no como negaciones (`!`) en `globs:`:
+markdownlint-cli2 sigue symlinks al expandir los globs, y con un directorio que
+apunte a la raíz (un `roles/` de Ansible, por ejemplo) entra en loop. `ignores:`
+se aplica después y lo corta.
 
 Para sobrescribir alguna regla de la base, agregarla bajo `config:` del lado
 del proyecto (es prioritaria sobre lo extendido).
@@ -309,29 +317,11 @@ validaciones al tocar cualquier `dictionaries/*.txt`:
 
 ## Skill de Claude Code
 
-Este repo incluye el skill `mw-lint` para Claude Code, que automatiza la
-auditoría y configuración de cSpell y markdownlint en repositorios de Mikroways.
-
-### Instalación del skill
-
-```bash
-git clone git@gitlab.com:mikroways/tools/mw-docs-quality.git
-ln -s "$(pwd)/mw-docs-quality/skills/mw-lint" ~/.claude/skills/mw-lint
-```
-
-### Uso
-
-Desde cualquier repositorio de documentación, invocar el skill en Claude Code:
-
-```bash
-/mw-lint
-```
-
-El skill detecta el estado actual de cSpell y markdownlint, reporta inconsistencias
-con el estándar de Mikroways y puede aplicar correcciones si se lo pedís.
-
-Para mantener el skill actualizado, hacer `git pull` en el repo clonado — el symlink
-apunta siempre a la versión más reciente.
+El skill [`mw-lint`](https://gitlab.com/mikroways/tools/mw-skills/-/tree/main/skills/mw-lint)
+audita y aplica esta configuración (cSpell, markdownlint, pre-commit y lista de
+pendientes) en un repositorio de documentación. Vive en
+[mw-skills](https://gitlab.com/mikroways/tools/mw-skills); antes estaba en este
+repo. Desde la raíz del repositorio a revisar: `/mw-lint`.
 
 ## Recursos externos
 
