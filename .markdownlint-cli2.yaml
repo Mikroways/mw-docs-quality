@@ -1,5 +1,6 @@
 globs:
   - "**/*.md"
-  - "!node_modules/**"
+ignores:
+  - "node_modules/**"
 config:
   extends: ./markdownlint.json

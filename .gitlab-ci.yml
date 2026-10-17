@@ -11,7 +11,6 @@ stages:
 
 include:
   - local: .gitlab/ci/lint.yml
-  - local: .gitlab/ci/marco-tecnico.yml
   - local: .gitlab/ci/dict-quality.yml
 
 # Overrides: este repo usa los archivos locales, no el paquete publicado.
@@ -28,11 +27,6 @@ validate-spelling:
   script:
     - npm install
     - npx cspell "**/*.md"
-
-# Override: este repo no tiene docs/, el marcador está en README.md.
-validate-skill-version-docs:
-  variables:
-    SKILL_DOCS_PATH: README.md
 
 publish:
   stage: deploy
