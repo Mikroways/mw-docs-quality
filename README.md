@@ -30,11 +30,16 @@ El proyecto consumidor necesita 4 archivos:
 {
   "private": true,
   "devDependencies": {
-    "@mikroways/docs-quality": "*",
+    "@mikroways/docs-quality": "^2.7.0",
     "markdownlint-cli2": "^0.21.0"
   }
 }
 ```
+
+Con `"*"`, `npm install` se queda con la versión que tenga el
+`package-lock.json` del clon, aunque sea vieja. El rango mínimo asegura una
+versión con el pre-commit: el `prepare` apunta `core.hooksPath` a
+`hooks/marco`, y si esa carpeta no existe git no corre ningún hook y no avisa.
 
 ### 2. `.npmrc`
 
