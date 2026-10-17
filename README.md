@@ -14,6 +14,9 @@ documentación de Mikroways. Provee:
   `extends:`.
 - Template de GitLab CI (`.gitlab/ci/lint.yml`) con los jobs `validate-lint` y
   `validate-spelling` listos para incluir en cualquier proyecto.
+- Template de GitLab CI (`.gitlab/ci/skill-version.yml`) con el job
+  `validate-skill-version`, para los repos con skills propias en `skills/`:
+  exige que la versión suba si la skill cambió.
 - Hook de pre-commit para repos de documentación (`hooks/marco/pre-commit`):
   markdownlint y cSpell sobre los `.md` del commit, y `docs/todo-list.md`
   regenerado si el repo tiene `mkdocs.todo.yml`.
@@ -305,8 +308,6 @@ validaciones al tocar cualquier `dictionaries/*.txt`:
 3. **Bloquea** si una palabra nueva ya está cubierta por un dict built-in activo
 
 ## Skill de Claude Code
-
-<!-- skill-version: mw-lint 1.9.2 -->
 
 Este repo incluye el skill `mw-lint` para Claude Code, que automatiza la
 auditoría y configuración de cSpell y markdownlint en repositorios de Mikroways.
