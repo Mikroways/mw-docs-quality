@@ -1,0 +1,43 @@
+#!/bin/sh
+# Pre-commit de los repos de documentación (marcos técnicos y similares).
+#
+# 1. markdownlint y cspell sobre los .md del commit, con la config del repo.
+# 2. Si el repo tiene mkdocs.todo.yml, regenera docs/todo-list.md y lo suma
+#    al commit. task-collector no puede ir en el mkdocs.yml: el portal genera
+#    los TechDocs con un entorno que no lo trae.
+#
+# Se instala con `npm install`, vía el script prepare del package.json:
+#   git config core.hooksPath node_modules/@mikroways/docs-quality/hooks/marco
+#
+# Un fallo corta el commit. Para saltearlo: git commit --no-verify.
+set -e
+
+cd "$(git rev-parse --show-toplevel)"
+bin=node_modules/.bin
+todo=docs/todo-list.md
+
+# Los .md del commit, sin el todo-list, que es generado.
+staged_md() {
+  git -c core.quotePath=false diff --cached --name-only -z --diff-filter=ACMR \
+    -- '*.md' ":(exclude)$todo"
+}
+
+if [ -n "$(staged_md | tr -d '\0')" ]; then
+  if [ ! -x "$bin/markdownlint-cli2" ] || [ ! -x "$bin/cspell" ]; then
+    echo "pre-commit: faltan markdownlint-cli2 o cspell, correr npm install" >&2
+    exit 1
+  fi
+  # --no-globs: solo los archivos del commit, no los globs de la config.
+  staged_md | xargs -0 "$bin/markdownlint-cli2" --no-globs
+  staged_md | xargs -0 "$bin/cspell" --no-progress --no-summary --no-must-find-files
+fi
+
+# Cualquier cambio en docs/, borrados incluidos, puede cambiar la lista.
+if [ -f mkdocs.todo.yml ] && ! git diff --cached --quiet -- docs; then
+  site=$(mktemp -d)
+  trap 'rm -rf "$site"' EXIT
+  # VIRTUAL_ENV de otro proyecto hace que uv use ese entorno en vez del del repo.
+  env -u VIRTUAL_ENV uv run --quiet python -m mkdocs build --quiet \
+    -f mkdocs.todo.yml --site-dir "$site"
+  git add "$todo"
+fi

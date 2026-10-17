@@ -16,6 +16,7 @@
 #   - .npmrc apuntando al GitLab Package Registry de Mikroways
 #   - .markdownlint-cli2.yaml con globs (puede extender la config compartida)
 #   - .cspell.json importando ./node_modules/@mikroways/docs-quality/cspell.base.json
+#   - (opcional) mkdocs.todo.yml para validate-todo-list
 #
 # Los jobs corren solo en el pipeline del merge request. Correrlos otra vez en
 # main repetiría lo que el MR ya validó; lo que los cubre en main es que la
@@ -55,3 +56,27 @@ validate-spelling:
   script:
     - npm install --no-save @mikroways/docs-quality@latest
     - npx cspell "**/*.md"
+# docs/todo-list.md al día con los TODO de la doc. Corre solo si el repo tiene
+# mkdocs.todo.yml (un INHERIT del mkdocs.yml con task-collector como único
+# plugin). No es allow_failure: una lista vieja no tiene que llegar a main.
+# El pre-commit de hooks/marco la regenera sola al commitear.
+validate-todo-list:
+  image: ghcr.io/astral-sh/uv:0.10.2-python3.13-alpine
+  stage: validate
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      exists:
+        - mkdocs.todo.yml
+  variables:
+    UV_LINK_MODE: copy
+  before_script:
+    - apk add --no-cache git
+  script:
+    # Sin --no-dev: en algunos marcos task-collector está en el grupo dev.
+    - uv run mkdocs build -f mkdocs.todo.yml --site-dir /tmp/todo
+    - |
+      if ! git diff --exit-code -- docs/todo-list.md; then
+        echo "docs/todo-list.md está desactualizado. Regenerarlo con:"
+        echo "  uv run mkdocs build -f mkdocs.todo.yml --site-dir /tmp/todo"
+        exit 1
+      fi
