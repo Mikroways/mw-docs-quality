@@ -14,6 +14,9 @@ documentación de Mikroways. Provee:
   `extends:`.
 - Template de GitLab CI (`.gitlab/ci/lint.yml`) con los jobs `validate-lint` y
   `validate-spelling` listos para incluir en cualquier proyecto.
+- Hook de pre-commit para repos de documentación (`hooks/marco/pre-commit`):
+  markdownlint y cSpell sobre los `.md` del commit, y `docs/todo-list.md`
+  regenerado si el repo tiene `mkdocs.todo.yml`.
 - Reusable workflow de GitHub Actions (`.github/workflows/lint.yml`) consumible
   vía `uses: Mikroways/mw-docs-quality/.github/workflows/lint.yml@main`.
 
@@ -123,6 +126,42 @@ El template provee:
 
 Ambos jobs usan `allow_failure: true` para no bloquear el pipeline durante la
 adopción inicial.
+
+- `validate-todo-list`: solo si el repo tiene `mkdocs.todo.yml`. Regenera
+  `docs/todo-list.md` y falla si difiere del commiteado. No es
+  `allow_failure`.
+
+## Pre-commit
+
+`hooks/marco/pre-commit` se publica con el paquete. El consumidor lo instala
+con un `prepare` en su `package.json`, que corre en cada `npm install`:
+
+```json
+"scripts": {
+  "prepare": "git config core.hooksPath node_modules/@mikroways/docs-quality/hooks/marco || true"
+}
+```
+
+El hook:
+
+1. Corre `markdownlint-cli2 --no-globs` y `cspell` sobre los `.md` del commit,
+   con la config del repo. Si alguno falla, corta el commit
+   (`git commit --no-verify` lo saltea).
+2. Si el repo tiene `mkdocs.todo.yml` y el commit toca `docs/`, regenera
+   `docs/todo-list.md` y lo suma al commit.
+
+`mkdocs.todo.yml` existe porque task-collector no puede ir en el `mkdocs.yml`:
+el portal genera los TechDocs con el entorno de Python de su imagen,
+que no lo trae. Además, con `techdocs-core` activo, task-collector escribe la
+lista en el directorio temporal del build y no en el repo. El archivo hereda
+del principal y deja task-collector como único plugin:
+
+```yaml
+INHERIT: mkdocs.yml
+plugins:
+  - task-collector:
+      output_file: todo-list.md
+```
 
 ## GitHub Actions
 
